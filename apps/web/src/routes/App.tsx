@@ -148,7 +148,7 @@ export function App() {
 
       {backendMode === "live" && weatherState.error ? (
         <section className="error-panel" aria-label="Weather error">
-          <h2>Weather data is unavailable</h2>
+          <h2>Weather data could not be loaded</h2>
           <p>{weatherState.error}</p>
           <button
             type="button"

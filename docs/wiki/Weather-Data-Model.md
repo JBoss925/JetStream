@@ -17,7 +17,7 @@ The app renders normalized weather data rather than raw Open-Meteo payloads.
 
 ## Current Conditions
 
-Current conditions include temperature, apparent temperature, weather code, humidity, pressure, cloud cover, precipitation, wind speed, wind gusts, wind direction, and day/night state.
+Current conditions include temperature, apparent temperature, weather code, optional humidity, optional pressure, optional cloud cover, optional precipitation, optional wind speed, optional wind gusts, optional wind direction, optional current UV index, and day/night state.
 
 ## Hourly Points
 
@@ -26,11 +26,11 @@ Hourly points include:
 - time
 - temperature and apparent temperature
 - weather code, summary, and family
-- precipitation probability
-- humidity
-- cloud cover
-- wind speed
-- wind direction
+- optional precipitation probability
+- optional humidity
+- optional cloud cover
+- optional wind speed
+- optional wind direction
 
 Live mode requests 48 forecast hours from Open-Meteo and the dashboard displays the first relevant subset in the instruments.
 
@@ -44,8 +44,10 @@ Daily points include:
 - low temperature
 - sunrise
 - sunset
-- maximum precipitation probability
-- maximum UV index
+- optional maximum precipitation probability
+- optional maximum UV index
+
+The UI must distinguish missing optional fields from meaningful zero values. Missing humidity is not `0%`, missing cloud cover is not clear sky, missing wind is not calm wind, missing precipitation probability is not `0%`, and missing UV index is not a low UV reading.
 
 Forecast rows render the high first, then the low, for example `64° / 52°F`.
 

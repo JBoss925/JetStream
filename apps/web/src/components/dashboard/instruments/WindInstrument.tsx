@@ -17,14 +17,15 @@ interface WindInstrumentProps {
 }
 
 export function WindInstrument({ weather }: WindInstrumentProps) {
-  const windSpeed = weather.current.windSpeed ?? 0;
-  const displayedWindSpeed = Math.round(windSpeed);
+  const windSpeed = weather.current.windSpeed;
+  const effectiveWindSpeed = windSpeed ?? 0;
+  const displayedWindSpeed = windSpeed === undefined ? undefined : Math.round(windSpeed);
   const direction = weather.current.windDirection;
-  const particleCount = windParticleCount(windSpeed, weather.units);
+  const particleCount = windSpeed === undefined ? 0 : windParticleCount(windSpeed, weather.units);
   const hourlyWind = weather.hourly.slice(0, 8);
   const maxHourlyWind = Math.max(
     1,
-    displayedWindSpeed,
+    displayedWindSpeed ?? 0,
     ...hourlyWind.map((point) => point.windSpeed ?? 0),
   );
 
@@ -35,11 +36,15 @@ export function WindInstrument({ weather }: WindInstrumentProps) {
         <span>Wind</span>
       </div>
       <h3 id="wind-title">
-        {displayedWindSpeed} {windUnit(weather)}
+        {displayedWindSpeed === undefined
+          ? `-- ${windUnit(weather)}`
+          : `${displayedWindSpeed} ${windUnit(weather)}`}
       </h3>
       <p>
         {windDescription(windSpeed, weather.units, direction)}
-        {windGustDescription(windSpeed, weather.current.windGusts, weather.units)}
+        {windSpeed === undefined
+          ? ""
+          : windGustDescription(windSpeed, weather.current.windGusts, weather.units)}
       </p>
       <div className="compass-rose">
         <span>N</span>
@@ -51,7 +56,7 @@ export function WindInstrument({ weather }: WindInstrumentProps) {
             <span
               className="wind-pulse"
               key={index}
-              style={windParticleStyle(index, particleCount, windSpeed, weather.units)}
+              style={windParticleStyle(index, particleCount, effectiveWindSpeed, weather.units)}
             />
           ))}
         </div>
@@ -67,8 +72,9 @@ export function WindInstrument({ weather }: WindInstrumentProps) {
       </div>
       <ol className="hourly-wind-list" aria-label="Hourly wind speed">
         {hourlyWind.map((point) => {
-          const hourlySpeed = point.windSpeed ?? windSpeed;
-          const strength = clamp(hourlySpeed / maxHourlyWind, 0.22, 1);
+          const hourlySpeed = point.windSpeed;
+          const strength =
+            hourlySpeed === undefined ? 0.22 : clamp(hourlySpeed / maxHourlyWind, 0.22, 1);
 
           return (
             <li
@@ -85,7 +91,7 @@ export function WindInstrument({ weather }: WindInstrumentProps) {
               <span className="hourly-wind-arrow" aria-hidden="true">
                 <span />
               </span>
-              <strong>{Math.round(hourlySpeed)}</strong>
+              <strong>{hourlySpeed === undefined ? "--" : Math.round(hourlySpeed)}</strong>
               <time>{formatTime(point.time)}</time>
             </li>
           );

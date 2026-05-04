@@ -53,14 +53,14 @@ describe("useWeather", () => {
       vi.fn(async () => ({
         ok: false,
         status: 503,
-        json: async () => ({ message: "Weather unavailable" }),
+        json: async () => ({ message: "Weather request failed" }),
       })),
     );
 
     render(<HookHarness />);
 
     await waitFor(() => {
-      expect(screen.getByText("Weather unavailable")).toBeVisible();
+      expect(screen.getByText("Weather request failed")).toBeVisible();
     });
     expect(screen.getByText("no-data")).toBeVisible();
   });

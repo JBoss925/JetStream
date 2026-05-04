@@ -8,8 +8,8 @@ interface AtmosphereInstrumentProps {
 }
 
 export function AtmosphereInstrument({ weather }: AtmosphereInstrumentProps) {
-  const humidity = weather.current.humidity ?? 0;
-  const cloudCover = weather.current.cloudCover ?? 0;
+  const humidity = weather.current.humidity;
+  const cloudCover = weather.current.cloudCover;
   const pressure = Math.round(weather.current.pressure ?? 0);
   const hourlyAtmosphere = weather.hourly.slice(0, 8);
 
@@ -24,13 +24,13 @@ export function AtmosphereInstrument({ weather }: AtmosphereInstrumentProps) {
       <div className="atmosphere-stack">
         <div
           className="humidity-meter"
-          style={{ "--humidity": `${humidity}%` } as WeatherCssProperties}
+          style={{ "--humidity": `${humidity ?? 0}%` } as WeatherCssProperties}
         >
           <div className="meter-title">
             <span>
               <Droplets aria-hidden="true" size={16} /> Humidity
             </span>
-            <strong>{humidity}%</strong>
+            <strong>{humidity === undefined ? "--" : `${humidity}%`}</strong>
           </div>
           <div className="humidity-track">
             <span />
@@ -43,13 +43,13 @@ export function AtmosphereInstrument({ weather }: AtmosphereInstrumentProps) {
         </div>
         <div
           className="cloud-meter"
-          style={{ "--cloud-cover": `${cloudCover}%` } as WeatherCssProperties}
+          style={{ "--cloud-cover": `${cloudCover ?? 0}%` } as WeatherCssProperties}
         >
           <div className="meter-title">
             <span>
               <Cloud aria-hidden="true" size={16} /> Cloud cover
             </span>
-            <strong>{cloudCover}%</strong>
+            <strong>{cloudCover === undefined ? "--" : `${cloudCover}%`}</strong>
           </div>
           <div className="cloud-track">
             <span />
@@ -72,21 +72,25 @@ export function AtmosphereInstrument({ weather }: AtmosphereInstrumentProps) {
             <li key={point.time}>
               <div className="atmosphere-hourly-bars" aria-hidden="true">
                 <span
-                  className="hourly-humidity"
+                  className={`hourly-humidity${point.humidity === undefined ? " is-missing" : ""}`}
                   style={
                     {
-                      "--hourly-atmosphere-value": `${point.humidity ?? humidity}%`,
+                      "--hourly-atmosphere-value": `${point.humidity ?? 0}%`,
                     } as WeatherCssProperties
                   }
-                />
+                >
+                  {point.humidity === undefined ? <strong>--</strong> : null}
+                </span>
                 <span
-                  className="hourly-cloud"
+                  className={`hourly-cloud${point.cloudCover === undefined ? " is-missing" : ""}`}
                   style={
                     {
-                      "--hourly-atmosphere-value": `${point.cloudCover ?? cloudCover}%`,
+                      "--hourly-atmosphere-value": `${point.cloudCover ?? 0}%`,
                     } as WeatherCssProperties
                   }
-                />
+                >
+                  {point.cloudCover === undefined ? <strong>--</strong> : null}
+                </span>
               </div>
               <time>{formatTime(point.time)}</time>
             </li>

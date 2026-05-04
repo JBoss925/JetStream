@@ -5,6 +5,7 @@ import {
   clamp,
   currentPrecipitationProbability,
   formatTime,
+  hasPrecipitationProbabilityData,
   precipitationPeak,
 } from "../weatherUtils";
 
@@ -13,8 +14,9 @@ interface PrecipitationInstrumentProps {
 }
 
 export function PrecipitationInstrument({ weather }: PrecipitationInstrumentProps) {
-  const peak = precipitationPeak(weather.hourly);
-  const currentProbability = currentPrecipitationProbability(weather);
+  const hasProbabilityData = hasPrecipitationProbabilityData(weather.hourly);
+  const peak = hasProbabilityData ? precipitationPeak(weather.hourly) : undefined;
+  const currentProbability = currentPrecipitationProbability(weather) ?? 0;
   const chartMax = Math.max(
     35,
     ...weather.hourly.slice(0, 8).map((point) => point.precipitationProbability ?? 0),
@@ -25,8 +27,8 @@ export function PrecipitationInstrument({ weather }: PrecipitationInstrumentProp
     return probability > 0 ? Math.pow(probability, 1.25) : 0;
   });
   const precipitationWeightTotal = precipitationWeights.reduce((sum, weight) => sum + weight, 0);
-  const precipitationIntensity = clamp(peak / 100, 0, 1);
-  const dropCount = peak > 0 ? Math.round(6 + precipitationIntensity * 32) : 0;
+  const precipitationIntensity = clamp((peak ?? 0) / 100, 0, 1);
+  const dropCount = (peak ?? 0) > 0 ? Math.round(6 + precipitationIntensity * 32) : 0;
   const pickDropLane = (randomValue: number, jitterValue: number) => {
     let weightedHourIndex = Math.floor(randomValue * precipitationHours.length);
 
@@ -78,7 +80,9 @@ export function PrecipitationInstrument({ weather }: PrecipitationInstrumentProp
         <CloudRain aria-hidden="true" size={20} />
         <span>Precipitation</span>
       </div>
-      <h3 id="precipitation-title">{peak}% chance next 12 hours</h3>
+      <h3 id="precipitation-title">
+        {peak === undefined ? "--" : `${peak}% chance next 12 hours`}
+      </h3>
       <div className="precipitation-scene" aria-hidden="true">
         {rainDrops.map((drop) => (
           <span
@@ -96,8 +100,10 @@ export function PrecipitationInstrument({ weather }: PrecipitationInstrumentProp
       </div>
       <ol className="precipitation-bars" aria-label="Hourly precipitation probability">
         {weather.hourly.slice(0, 8).map((point) => {
-          const probability = Math.round(point.precipitationProbability ?? 0);
-          const height = clamp((probability / chartMax) * 100, 4, 100);
+          const probability = point.precipitationProbability;
+          const roundedProbability =
+            probability === undefined ? undefined : Math.round(probability);
+          const height = clamp(((roundedProbability ?? 0) / chartMax) * 100, 4, 100);
 
           return (
             <li
@@ -105,7 +111,9 @@ export function PrecipitationInstrument({ weather }: PrecipitationInstrumentProp
               style={{ "--hourly-precipitation-height": `${height}%` } as WeatherCssProperties}
             >
               <span>
-                <strong>{probability}%</strong>
+                <strong>
+                  {roundedProbability === undefined ? "--" : `${roundedProbability}%`}
+                </strong>
               </span>
               <time>{formatTime(point.time)}</time>
             </li>

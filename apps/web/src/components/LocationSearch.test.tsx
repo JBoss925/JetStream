@@ -86,7 +86,7 @@ describe("LocationSearch", () => {
       vi.fn(async () => ({
         ok: false,
         status: 502,
-        json: async () => ({ message: "Search service unavailable" }),
+        json: async () => ({ message: "Search service failed" }),
       })),
     );
     vi.spyOn(console, "error").mockImplementation(() => undefined);
@@ -97,7 +97,7 @@ describe("LocationSearch", () => {
     await user.type(screen.getByRole("combobox", { name: "Location" }), "Lo");
 
     await waitFor(() => {
-      expect(screen.getByText("Search service unavailable")).toBeVisible();
+      expect(screen.getByText("Search service failed")).toBeVisible();
     });
   });
 

@@ -80,7 +80,7 @@ Large flakes fall fastest. Smaller flakes fall slower to imply distance.
 
 ## Precipitation Instrument Effect
 
-The precipitation card does not reuse the hero effect. It renders its own rain-only drop field based on current precipitation probability, falling back to hourly probability when current probability is absent.
+The precipitation card does not reuse the hero effect. It renders its own rain-only drop field based on current precipitation probability, falling back to hourly probability when current probability is absent. When precipitation probability data is missing, the card suppresses drops and renders `--` labels instead of implying a `0%` chance.
 
 The number of drops, positions, starting heights, travel distances, delay, duration, opacity, and height are generated from deterministic pseudo-random values so the scene is stable but less repetitive.
 

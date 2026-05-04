@@ -26,7 +26,7 @@ export function DaylightInstrument({ weather, daylight }: DaylightInstrumentProp
         <span>Daylight</span>
       </div>
       <h3 id="daylight-title">
-        {sunrise && sunset ? `${formatTime(sunrise)} - ${formatTime(sunset)}` : "Unavailable"}
+        {sunrise && sunset ? `${formatTime(sunrise)} - ${formatTime(sunset)}` : "--"}
       </h3>
       <div className="daylight-arc" aria-hidden="true">
         <svg viewBox="0 0 240 128" role="img">

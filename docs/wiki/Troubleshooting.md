@@ -22,7 +22,7 @@ Common causes:
 
 - The API dev server is not running in backend mode.
 - The browser is offline.
-- Open-Meteo is temporarily unavailable.
+- Open-Meteo is temporarily down.
 - A browser extension or network policy blocks third-party API calls in direct mode.
 
 ## Location Search Shows No Results

@@ -91,7 +91,7 @@ The hero uses local CSS custom properties for weather colors. It intentionally d
 
 ### Wind
 
-The wind instrument shows sustained wind speed, optional gust text when Open-Meteo reports a different current gust value, direction copy, a circular compass with arrow orientation, and hourly wind speed/direction indicators.
+The wind instrument shows sustained wind speed, optional gust text when Open-Meteo reports a different current gust value, direction copy, a circular compass with arrow orientation, and hourly wind speed/direction indicators. When wind speed is missing, the card renders `-- mph` or `-- km/h`, uses `Wind unavailable` copy, suppresses gust copy and motion particles, and avoids treating missing wind as calm wind.
 
 Implementation: `components/dashboard/instruments/WindInstrument.tsx` with styles in `styles/dashboard/wind.css`.
 
@@ -104,6 +104,8 @@ The atmosphere instrument shows:
 - Cloud-cover meter with icon, value, and range labels.
 - Hourly humidity and cloud-cover bars.
 
+Missing pressure uses `Pressure unavailable` under the atmosphere heading. Missing humidity and cloud-cover readings render as `--` in both the current meters and hourly atmosphere chart.
+
 Implementation: `components/dashboard/instruments/AtmosphereInstrument.tsx` with styles in `styles/dashboard/atmosphere.css`.
 
 ### Precipitation
@@ -113,6 +115,7 @@ The precipitation instrument shows:
 - Peak precipitation probability in the next 12 hours.
 - Rain-only mini effect controlled by current precipitation probability with hourly fallback.
 - Eight-hour precipitation bar chart with value labels.
+- `--` heading and bar labels when precipitation probability data is missing.
 
 Implementation: `components/dashboard/instruments/PrecipitationInstrument.tsx` with styles in `styles/dashboard/precipitation.css`.
 
@@ -125,7 +128,7 @@ The daylight instrument shows:
 - Sunrise row.
 - Sunset row.
 - Remaining daylight row.
-- UV index row with severity label, such as `6.3 (High)`.
+- UV index row with severity label, such as `6.3 (High)`, or `--` when UV data is missing.
 
 Before sunrise, the remaining row reports time until sunrise. After sunset, it reports that the sun has set.
 

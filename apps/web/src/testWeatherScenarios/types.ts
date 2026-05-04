@@ -32,7 +32,8 @@ export interface ScenarioSeed {
   sunset?: string;
   dailyRangeF: [number, number];
   hourlyCodes: number[];
-  hourlyPrecipitation: number[];
+  hourlyPrecipitation?: number[];
   dailyCodes?: number[];
   dailyUvIndexMax?: number[];
+  estimateDailyUvIndex?: boolean;
 }

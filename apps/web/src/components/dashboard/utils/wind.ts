@@ -20,7 +20,11 @@ function windMovementLabel(direction?: number): string {
   return compassLabel((direction + 180) % 360);
 }
 
-export function windDescription(speed: number, units: Units, direction?: number): string {
+export function windDescription(speed: number | undefined, units: Units, direction?: number): string {
+  if (speed === undefined) {
+    return "Wind unavailable";
+  }
+
   const mph = windSpeedAsMph(speed, units);
   const movementLabel = windMovementLabel(direction);
 

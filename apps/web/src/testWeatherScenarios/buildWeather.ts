@@ -76,9 +76,15 @@ function buildHourly(seed: ScenarioSeed, units: Units): HourlyPoint[] {
       weatherCode: info.code,
       summary: info.summary,
       family: info.family,
-      humidity: Math.round(clamp((seed.humidity ?? 50) + offset * 2, 0, 100)),
-      precipitationProbability: seed.hourlyPrecipitation[index],
-      cloudCover: Math.round(clamp((seed.cloudCover ?? 0) + offset * 3, 0, 100)),
+      humidity:
+        seed.humidity === undefined
+          ? undefined
+          : Math.round(clamp(seed.humidity + offset * 2, 0, 100)),
+      precipitationProbability: seed.hourlyPrecipitation?.[index],
+      cloudCover:
+        seed.cloudCover === undefined
+          ? undefined
+          : Math.round(clamp(seed.cloudCover + offset * 3, 0, 100)),
       windSpeed:
         seed.windSpeedMph === undefined
           ? undefined
@@ -118,11 +124,13 @@ function buildDaily(seed: ScenarioSeed, units: Units): DailyForecast[] {
       family: info.family,
       sunrise: index === 0 ? seed.sunrise : shiftedIso(seed.sunrise, index),
       sunset: index === 0 ? seed.sunset : shiftedIso(seed.sunset, index),
-      precipitationProbabilityMax: Math.max(
-        0,
-        ...seed.hourlyPrecipitation.slice(index, index + 5),
-      ),
-      uvIndexMax: seed.dailyUvIndexMax?.[index] ?? estimateUvIndex(seed, index),
+      precipitationProbabilityMax:
+        seed.hourlyPrecipitation === undefined
+          ? undefined
+          : Math.max(0, ...seed.hourlyPrecipitation.slice(index, index + 5)),
+      uvIndexMax:
+        seed.dailyUvIndexMax?.[index] ??
+        (seed.estimateDailyUvIndex === false ? undefined : estimateUvIndex(seed, index)),
     };
   });
 }

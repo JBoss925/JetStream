@@ -43,8 +43,19 @@ describe("testWeatherScenarios", () => {
     expect(Math.max(...currentValues.map((current) => current.precipitation ?? 0))).toBeGreaterThan(2);
     expect(Math.min(...weathers.flatMap((weather) => weather.daily.map((day) => day.uvIndexMax ?? 0)))).toBeGreaterThanOrEqual(0);
     expect(Math.max(...weathers.flatMap((weather) => weather.daily.map((day) => day.uvIndexMax ?? 0)))).toBeGreaterThan(8);
+    expect(currentValues.some((current) => current.humidity === undefined)).toBe(true);
+    expect(currentValues.some((current) => current.cloudCover === undefined)).toBe(true);
     expect(currentValues.some((current) => current.windSpeed === undefined)).toBe(true);
     expect(currentValues.some((current) => current.pressure === undefined)).toBe(true);
+    expect(weathers.some((weather) => weather.current.precipitation === undefined)).toBe(true);
+    expect(
+      weathers.some((weather) =>
+        weather.hourly.every((point) => point.precipitationProbability === undefined),
+      ),
+    ).toBe(true);
+    expect(
+      weathers.some((weather) => weather.daily.every((day) => day.uvIndexMax === undefined)),
+    ).toBe(true);
   });
 
   it("keeps every scenario valid across imperial and metric units", () => {
@@ -101,9 +112,15 @@ describe("testWeatherScenarios", () => {
       const hourly = weather.hourly;
 
       expect(new Set(hourly.map((point) => point.weatherCode)).size).toBeGreaterThan(1);
-      expect(new Set(hourly.map((point) => point.precipitationProbability)).size).toBeGreaterThan(1);
-      expect(new Set(hourly.map((point) => point.humidity)).size).toBeGreaterThan(1);
-      expect(new Set(hourly.map((point) => point.cloudCover)).size).toBeGreaterThan(1);
+      if (hourly.some((point) => point.precipitationProbability !== undefined)) {
+        expect(new Set(hourly.map((point) => point.precipitationProbability)).size).toBeGreaterThan(1);
+      }
+      if (weather.current.humidity !== undefined) {
+        expect(new Set(hourly.map((point) => point.humidity)).size).toBeGreaterThan(1);
+      }
+      if (weather.current.cloudCover !== undefined) {
+        expect(new Set(hourly.map((point) => point.cloudCover)).size).toBeGreaterThan(1);
+      }
       if (weather.current.windSpeed !== undefined) {
         expect(new Set(hourly.map((point) => point.windSpeed)).size).toBeGreaterThan(1);
         expect(new Set(hourly.map((point) => point.windDirection)).size).toBeGreaterThan(1);

@@ -187,8 +187,8 @@ const daySeeds: ScenarioSeed[] = [
     isDay: true,
     dailyRangeF: [58, 58],
     hourlyCodes: [2, 3, 45, 51, 61, 71, 95, 56, 0, 1, 2, 3],
-    hourlyPrecipitation: [0, 15, 30, 45, 60, 75, 90, 100, 10, 0, 5, 20],
     dailyCodes: [2, 3, 45, 51, 61, 71, 95],
+    estimateDailyUvIndex: false,
   },
 ];
 

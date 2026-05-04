@@ -7,10 +7,17 @@ export function precipitationPeak(hourly: HourlyPoint[]): number {
   );
 }
 
-export function currentPrecipitationProbability(weather: NormalizedWeatherResponse): number {
-  return Math.round(
+export function hasPrecipitationProbabilityData(hourly: HourlyPoint[]): boolean {
+  return hourly.slice(0, 12).some((point) => point.precipitationProbability !== undefined);
+}
+
+export function currentPrecipitationProbability(
+  weather: NormalizedWeatherResponse,
+): number | undefined {
+  const probability =
     weather.current.precipitationProbability ??
-      weather.hourly[0]?.precipitationProbability ??
-      precipitationPeak(weather.hourly),
-  );
+    weather.hourly[0]?.precipitationProbability ??
+    (hasPrecipitationProbabilityData(weather.hourly) ? precipitationPeak(weather.hourly) : undefined);
+
+  return probability === undefined ? undefined : Math.round(probability);
 }

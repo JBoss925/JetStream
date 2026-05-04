@@ -46,4 +46,4 @@ All network tests use mocked fetch responses. Tests should assert the normalized
 
 ## Scenario Philosophy
 
-Scenarios are not just screenshots. They are contract fixtures that force the dashboard through clear, clouds, fog, drizzle, rain, snow, storm, mixed/freezing precipitation, missing optional sensor data, low/high precipitation, low/high wind, pressure states, humidity/cloud extremes, and day/night presentation.
+Scenarios are not just screenshots. They are contract fixtures that force the dashboard through clear, clouds, fog, drizzle, rain, snow, storm, mixed/freezing precipitation, missing optional sensor data, low/high precipitation, low/high wind, pressure states, humidity/cloud extremes, and day/night presentation. The sparse optional-sensor fixture intentionally omits humidity, cloud cover, wind, precipitation probability, precipitation totals, and UV index data so tests verify `--` UI states rather than accidental zero-value fallbacks.

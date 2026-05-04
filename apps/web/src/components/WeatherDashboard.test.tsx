@@ -29,7 +29,6 @@ describe("WeatherDashboard", () => {
             pressure: undefined,
             windSpeed: undefined,
             windDirection: undefined,
-            precipitationProbability: 55,
             uvIndex: undefined,
           },
           hourly: sparse.hourly.map((point) => ({
@@ -51,11 +50,11 @@ describe("WeatherDashboard", () => {
 
     expect(screen.getByText("Fixture")).toBeVisible();
     expect(screen.getByText("-- hPa")).toBeVisible();
+    expect(screen.getByRole("heading", { name: "-- mph" })).toBeVisible();
+    expect(screen.getByText("Wind unavailable")).toBeVisible();
     expect(screen.getByText("Pressure unavailable")).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Unavailable" })).toBeVisible();
-    expect(screen.getByText("Daylight unavailable")).toBeVisible();
-    expect(screen.getAllByText("--").length).toBeGreaterThan(0);
-    expect(screen.getByText("Calm winds with little directional movement.")).toBeVisible();
+    expect(screen.getAllByRole("heading", { name: "--" })).toHaveLength(2);
+    expect(screen.getAllByText("--").length).toBeGreaterThan(10);
   });
 
   it("renders daylight, wind, pressure, and precipitation edge states", () => {
@@ -102,7 +101,7 @@ describe("WeatherDashboard", () => {
   it("handles invalid times, empty forecasts, and wind copy fallbacks", () => {
     const base = weather("clear-hot-dry");
 
-    render(
+    const { rerender } = render(
       <WeatherDashboard
         weather={{
           ...base,
@@ -123,9 +122,24 @@ describe("WeatherDashboard", () => {
 
     expect(screen.getByText(/Updated --/)).toBeVisible();
     expect(screen.getByText("Variable winds with shifting direction.")).toBeVisible();
-    expect(screen.getByText("Daylight unavailable")).toBeVisible();
+    expect(screen.getAllByText("--").length).toBeGreaterThan(0);
     expect(screen.getByText("12 (Extreme)")).toBeVisible();
     expect(screen.getByText("-- - --")).toBeVisible();
+
+    rerender(
+      <WeatherDashboard
+        weather={{
+          ...base,
+          current: {
+            ...base.current,
+            windSpeed: 2,
+            windDirection: undefined,
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Calm winds with little directional movement.")).toBeVisible();
   });
 
   it("falls back when daylight timestamps are invalid", () => {
@@ -147,7 +161,7 @@ describe("WeatherDashboard", () => {
     );
 
     expect(screen.getAllByText("--").length).toBeGreaterThan(0);
-    expect(screen.getByText("Daylight unavailable")).toBeVisible();
+    expect(screen.getAllByText("--").length).toBeGreaterThan(0);
   });
 
   it("covers daylight countdown and wind severity variants", () => {

@@ -134,7 +134,7 @@ describe("App", () => {
       .mockResolvedValueOnce({
         ok: false,
         status: 502,
-        json: async () => ({ message: "Open-Meteo unavailable" }),
+        json: async () => ({ message: "Open-Meteo request failed" }),
       })
       .mockResolvedValue({
         ok: true,
@@ -145,7 +145,7 @@ describe("App", () => {
 
     render(<App />);
 
-    expect(await screen.findByText("Open-Meteo unavailable")).toBeVisible();
+    expect(await screen.findByText("Open-Meteo request failed")).toBeVisible();
 
     await user.click(screen.getByRole("button", { name: "Retry" }));
 

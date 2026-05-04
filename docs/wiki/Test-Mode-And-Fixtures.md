@@ -33,20 +33,20 @@ Each scenario seed includes:
 - WMO weather code.
 - Observation time.
 - Temperature and apparent temperature.
-- Humidity.
-- Wind speed, optional gusts, and direction.
+- Optional humidity.
+- Optional wind speed, gusts, and direction.
 - Pressure.
-- Cloud cover.
-- Current precipitation.
+- Optional cloud cover.
+- Optional current precipitation.
 - Sunrise and sunset.
 - Daily range.
-- Daily UV index max values or generated UV estimates.
+- Optional daily UV index max values or generated UV estimates.
 - Hourly weather codes.
-- Hourly precipitation probabilities.
-- Hourly humidity values.
-- Hourly cloud-cover values.
-- Hourly wind speeds.
-- Hourly wind directions.
+- Optional hourly precipitation probabilities.
+- Optional hourly humidity values.
+- Optional hourly cloud-cover values.
+- Optional hourly wind speeds.
+- Optional hourly wind directions.
 - Optional daily code sequence.
 
 Each seed can build either imperial or metric data.
@@ -91,8 +91,10 @@ The web test suite verifies that fixtures:
 - Build normalized weather objects in the expected shape.
 - Include 12 hourly points.
 - Include seven daily points.
-- Include hourly humidity, cloud cover, wind speed, and wind direction variation.
-- Keep hourly precipitation probabilities inside `0..100`.
+- Include hourly humidity and cloud-cover variation when those sensors are present.
+- Include hourly wind speed and wind direction variation when wind sensor data is present.
+- Keep hourly precipitation probabilities inside `0..100` when precipitation probability data is present.
+- Include a sparse optional-sensor scenario that leaves humidity, cloud cover, wind, precipitation probability, precipitation totals, and UV index data missing.
 - Keep daily ranges ordered high-to-low after unit conversion.
 - Generate derived insights.
 
@@ -100,7 +102,7 @@ The web test suite verifies that fixtures:
 
 1. Add a `ScenarioSeed` to `daySeeds` in `apps/web/src/testWeatherScenarios/seeds.ts`.
 2. Pick a WMO code from `packages/domain/src/weather-code.ts`.
-3. Provide 12 hourly codes, precipitation probabilities, humidity values, cloud-cover values, wind speeds, and wind directions.
+3. Provide 12 hourly codes and representative optional sensor values when the scenario is meant to exercise those sensors.
 4. Add daily codes if the default sequence is not suitable.
 5. Confirm the scenario appears in the dropdown.
 6. Run `npm run test -w @jetstream-weather/web` and `npm run coverage -w @jetstream-weather/web`.

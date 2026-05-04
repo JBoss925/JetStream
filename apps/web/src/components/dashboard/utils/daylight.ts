@@ -22,7 +22,7 @@ export function daylightCountdown(
   sunset: string | undefined,
 ): string {
   if (!sunrise || !sunset) {
-    return "Daylight unavailable";
+    return "--";
   }
 
   const now = new Date(observedAt).getTime();
@@ -30,7 +30,7 @@ export function daylightCountdown(
   const end = new Date(sunset).getTime();
 
   if (!Number.isFinite(now) || !Number.isFinite(start) || !Number.isFinite(end)) {
-    return "Daylight unavailable";
+    return "--";
   }
 
   if (now < start) {
