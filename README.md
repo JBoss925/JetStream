@@ -33,11 +33,14 @@ To bypass the backend for frontend-only deployment, set `VITE_WEATHER_DATA_SOURC
 
 ```bash
 npm run build
+npm run build:netlify
 npm run test
 npm run coverage
 npm run typecheck
 npm run lint
 ```
+
+`npm run build:netlify` builds the static web application with `VITE_WEATHER_DATA_SOURCE=direct`, so the deployed app calls Open-Meteo directly and does not require a hosted API service.
 
 `npm run coverage` enforces 100% statement, line, and function coverage across the domain, API, and web workspaces. Branch thresholds are enforced separately because V8 counts TypeScript optional/default branches and defensive runtime guards.
 

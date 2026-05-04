@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces",
+    "build:netlify": "npm run build -w @jetstream-weather/domain && VITE_WEATHER_DATA_SOURCE=direct npm run build -w @jetstream-weather/web",
     "coverage": "npm run coverage --workspaces",
     "dev": "npm run build -w @jetstream-weather/domain && concurrently \"npm run dev -w @jetstream-weather/api\" \"npm run dev -w @jetstream-weather/web\"",
     "lint": "eslint .",
