@@ -26,6 +26,20 @@ const unitsKey = "jetstream-weather:units";
 const themeKey = "jetstream-weather:theme";
 const colorThemeKey = "jetstream-weather:color-theme";
 const defaultLocationKey = "jetstream-weather:default-location";
+export const colorThemeAccents: Record<ColorThemePreference, string> = {
+  cyan: "#0d8fb3",
+  seafoam: "#0f7668",
+  blue: "#256ca8",
+  purple: "#7756c5",
+  rose: "#c04b73",
+  amber: "#b87516",
+  slate: "#4b6584",
+  indigo: "#4f63c6",
+  magenta: "#b342a0",
+  coral: "#cf5f42",
+  lime: "#6f9622",
+  graphite: "#505a66",
+};
 const colorThemes = new Set<ColorThemePreference>([
   "cyan",
   "seafoam",
@@ -40,6 +54,10 @@ const colorThemes = new Set<ColorThemePreference>([
   "lime",
   "graphite",
 ]);
+
+export function getColorThemeAccent(colorTheme: ColorThemePreference): string {
+  return colorThemeAccents[colorTheme];
+}
 
 export function readUnitsPreference(): Units {
   return localStorage.getItem(unitsKey) === "metric" ? "metric" : "imperial";

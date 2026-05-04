@@ -5,6 +5,7 @@ import { PreferenceBar, type BackendMode } from "../components/PreferenceBar";
 import { WeatherDashboard } from "../components/WeatherDashboard";
 import { useWeather } from "../hooks/useWeather";
 import {
+  getColorThemeAccent,
   readColorThemePreference,
   readDefaultStartupPreference,
   readThemePreference,
@@ -30,6 +31,22 @@ const defaultLocation: LocationOption = {
   longitude: -80.8431,
   timezone: "America/New_York",
 };
+
+function buildIconSvg(strokeColor: string): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><path d="M6 34 C14 18 26 18 34 34 C42 50 54 50 62 34 C70 18 82 18 90 34 C98 50 114 50 122 34" fill="none" stroke="${strokeColor}" stroke-width="12" stroke-linecap="round"/><path d="M6 64 C14 48 26 48 34 64 C42 80 54 80 62 64 C70 48 82 48 90 64 C98 80 114 80 122 64" fill="none" stroke="${strokeColor}" stroke-width="12" stroke-linecap="round"/><path d="M6 94 C14 78 26 78 34 94 C42 110 54 110 62 94 C70 78 82 78 90 94 C98 110 114 110 122 94" fill="none" stroke="${strokeColor}" stroke-width="12" stroke-linecap="round"/></svg>`;
+}
+
+function setPaletteIcon(colorTheme: ColorThemePreference) {
+  const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+
+  if (!icon) {
+    return;
+  }
+
+  icon.href = `data:image/svg+xml,${encodeURIComponent(
+    buildIconSvg(getColorThemeAccent(colorTheme)),
+  )}`;
+}
 
 export function App() {
   const [defaultStartup, setDefaultStartup] = useState(() =>
@@ -70,6 +87,7 @@ export function App() {
 
   useEffect(() => {
     document.documentElement.dataset.colorTheme = colorTheme;
+    setPaletteIcon(colorTheme);
   }, [colorTheme]);
 
   function handleUnitsChange(nextUnits: Units) {

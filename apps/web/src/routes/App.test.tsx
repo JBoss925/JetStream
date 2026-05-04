@@ -74,6 +74,7 @@ const weatherPayload = {
 describe("App", () => {
   beforeEach(() => {
     localStorage.clear();
+    document.head.innerHTML = '<link rel="icon" type="image/svg+xml" href="/icon.svg" />';
   });
 
   it("loads and renders default weather", async () => {
@@ -107,6 +108,24 @@ describe("App", () => {
     expect(screen.getByTestId("wind-arrow")).toHaveStyle({
       transform: "rotate(0deg)",
     });
+  });
+
+  it("renders when no favicon link is present", async () => {
+    document.head.innerHTML = "";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => weatherPayload,
+      })),
+    );
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Charlotte" })).toBeVisible();
+    });
+    expect(document.querySelector('link[rel="icon"]')).toBeNull();
   });
 
   it("surfaces live weather errors and can retry the request", async () => {
@@ -156,6 +175,9 @@ describe("App", () => {
     expect(localStorage.getItem("jetstream-weather:units")).toBe("metric");
     expect(localStorage.getItem("jetstream-weather:theme")).toBe("light");
     expect(localStorage.getItem("jetstream-weather:color-theme")).toBe("amber");
+    expect(document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.href).toContain(
+      "%23b87516",
+    );
   });
 
   it("uses a legacy saved default location for the first live weather request", async () => {

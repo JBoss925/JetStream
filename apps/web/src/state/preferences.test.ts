@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
+  getColorThemeAccent,
   readColorThemePreference,
   readDefaultStartupPreference,
   readThemePreference,
@@ -37,6 +38,8 @@ describe("preferences", () => {
     expect(readUnitsPreference()).toBe("metric");
     expect(readThemePreference()).toBe("light");
     expect(readColorThemePreference()).toBe("coral");
+    expect(getColorThemeAccent("cyan")).toBe("#0d8fb3");
+    expect(getColorThemeAccent("coral")).toBe("#cf5f42");
   });
 
   it("rejects invalid color themes and malformed defaults", () => {
