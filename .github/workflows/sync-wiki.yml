@@ -1,0 +1,60 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/wiki/**
+      - .github/workflows/sync-wiki.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-wiki
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Publish docs/wiki to GitHub Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Sync wiki pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WIKI_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.wiki.git
+          WIKI_WEB_URL: https://github.com/${{ github.repository }}/wiki
+        run: |
+          set -euo pipefail
+
+          wiki_dir="$(mktemp -d)"
+
+          if ! git ls-remote "$WIKI_URL" >/dev/null 2>&1; then
+            {
+              echo "::error title=Wiki repository is not initialized::Create and save the first wiki page at ${WIKI_WEB_URL}, then rerun this workflow. GitHub does not expose the .wiki.git repository until the wiki has at least one page."
+              echo "The repository wiki feature is enabled, but ${GITHUB_REPOSITORY}.wiki.git is not cloneable yet."
+              echo "Open ${WIKI_WEB_URL}, create a temporary Home page, save it, then rerun this workflow to replace it with docs/wiki."
+            } >&2
+            exit 1
+          fi
+
+          git clone "$WIKI_URL" "$wiki_dir"
+
+          rsync -a --delete --exclude '.git' docs/wiki/ "$wiki_dir"/
+
+          git -C "$wiki_dir" config user.name "github-actions[bot]"
+          git -C "$wiki_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$wiki_dir" add -A
+
+          if git -C "$wiki_dir" diff --cached --quiet; then
+            echo "Wiki already matches docs/wiki."
+            exit 0
+          fi
+
+          git -C "$wiki_dir" commit -m "Sync wiki from ${GITHUB_SHA}"
+          git -C "$wiki_dir" push origin HEAD:master

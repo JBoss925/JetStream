@@ -56,6 +56,12 @@ docs/
   wiki/       GitHub Wiki-ready documentation pages
 ```
 
+## Wiki Documentation
+
+The canonical wiki source lives in `docs/wiki`. GitHub Actions publishes that folder to the repository wiki whenever those files change on `main`, and the workflow can also be run manually from Actions > Sync Wiki. `docs/wiki/Home.md` becomes the wiki landing page, and `docs/wiki/_Sidebar.md` controls the wiki sidebar.
+
+GitHub does not expose the `.wiki.git` repository until the wiki has at least one saved page. After enabling the wiki for the first time, create and save any temporary Home page in the GitHub web UI, then run the `Sync Wiki` workflow manually. The workflow replaces the temporary page with `docs/wiki`.
+
 ## Data Sources
 
 - Open-Meteo geocoding: `https://geocoding-api.open-meteo.com/v1/search`

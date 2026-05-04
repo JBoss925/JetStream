@@ -29,6 +29,26 @@ npm run lint
 
 Coverage is expected to pass before deployment. The workspace enforces 100% statement, line, and function coverage; branch thresholds are package-specific because V8 includes TypeScript optional/default branches and defensive guards in branch accounting.
 
+## Wiki Publishing
+
+The public GitHub Wiki is generated from `docs/wiki`.
+
+One-time bootstrap for a newly enabled wiki:
+
+1. Open `https://github.com/JBoss925/JetStream/wiki`.
+2. Create and save any temporary Home page.
+3. Run Actions > Sync Wiki > Run workflow.
+4. Confirm the workflow replaces the temporary page with the files from `docs/wiki`.
+
+To publish wiki changes:
+
+1. Update the Markdown files in `docs/wiki`.
+2. Run the normal verification commands.
+3. Merge or push the changes to `main`.
+4. Confirm the `Sync Wiki` GitHub Actions workflow completes.
+
+The workflow also supports manual dispatch from Actions > Sync Wiki. That is useful after enabling the wiki for the first time, or if the wiki ever needs to be reseeded from the repository docs.
+
 ## Live Data
 
 Backend mode is the default live-data path. The browser calls the local API, and the API calls Open-Meteo. No provider API key is required.

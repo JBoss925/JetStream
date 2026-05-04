@@ -42,6 +42,14 @@ npm run build
 
 The web build output is `apps/web/dist`. The API build output is `apps/api/dist`.
 
+## Wiki Deployment
+
+The GitHub Wiki is deployed separately from the Netlify app. `docs/wiki` stays in the main repository as the canonical source, and `.github/workflows/sync-wiki.yml` copies that folder into `JetStream.wiki.git`.
+
+The workflow runs on pushes to `main` that touch `docs/wiki/**` or the workflow file itself. It can also be started manually from the GitHub Actions UI. The manual run is the recommended way to seed the wiki immediately after the workflow is merged.
+
+For the first run, GitHub requires the wiki to have at least one saved page before `JetStream.wiki.git` is cloneable. Create a temporary Home page in the GitHub web UI, then run `Sync Wiki`; the workflow deletes any placeholder content and publishes `docs/wiki`.
+
 ## API-Backed Runtime Requirements
 
 - API service with outbound access to Open-Meteo.

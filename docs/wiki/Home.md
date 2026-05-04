@@ -27,6 +27,12 @@ docs/
   wiki/       GitHub Wiki-ready documentation pages
 ```
 
+## Wiki Publishing
+
+The files in `docs/wiki` are the source of truth for the public GitHub Wiki. The `Sync Wiki` GitHub Actions workflow publishes this folder to `JetStream.wiki.git` when wiki docs change on `main`, and it can be run manually from the Actions tab to seed or repair the wiki.
+
+GitHub creates the wiki git repository only after the wiki has at least one saved page. For a newly enabled wiki, first create any temporary Home page at `https://github.com/JBoss925/JetStream/wiki`, then run the `Sync Wiki` workflow. The workflow will replace the temporary page with the checked-in docs.
+
 ## Local URL
 
 When `npm run dev` is running:
