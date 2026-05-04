@@ -58,6 +58,8 @@ docs/
 
 The web app is split by responsibility: `components/dashboard` contains dashboard sections and instruments, `styles/` mirrors those UI boundaries, `api/` separates the public client from direct Open-Meteo internals, and `testWeatherScenarios/` keeps visual QA fixtures separate from their builders.
 
+The root TypeScript config maps `@jetstream-weather/domain` to the domain source for editor resolution, while the domain package still exposes built `dist` declarations for package consumers. This keeps VS Code aware of the workspace without changing the runtime package contract.
+
 ## Wiki Documentation
 
 The canonical wiki source lives in `docs/wiki`. GitHub Actions publishes that folder to the repository wiki whenever those files change on `main`, and the workflow can also be run manually from Actions > Sync Wiki. `docs/wiki/Home.md` becomes the wiki landing page, and `docs/wiki/_Sidebar.md` controls the wiki sidebar.

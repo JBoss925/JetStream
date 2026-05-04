@@ -58,6 +58,12 @@ Both backend and direct mode request:
 
 The domain package contains the normalized TypeScript contracts, WMO weather-code mapping, and derived insight rules used by both runtime paths.
 
+## TypeScript Workspace Resolution
+
+The root `tsconfig.json` makes VS Code treat the repository as one TypeScript workspace. `tsconfig.base.json` maps `@jetstream-weather/domain` to `./packages/domain/src/index.ts` through `compilerOptions.paths`, so the web app can resolve the domain package from source even before `packages/domain/dist` exists.
+
+The config intentionally does not use `baseUrl`; TypeScript 6 deprecates it and TypeScript 7 removes it. Path targets are written explicitly relative to `tsconfig.base.json` instead.
+
 ## Frontend Code Boundaries
 
 The web app keeps large UI and data concerns split by responsibility:
