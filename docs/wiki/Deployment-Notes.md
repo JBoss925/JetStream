@@ -19,6 +19,14 @@ The Netlify Content Security Policy allows `connect-src` requests to:
 
 Open-Meteo must provide the browser CORS response headers for those API calls; Netlify only serves the static app and cannot add CORS headers to third-party Open-Meteo responses.
 
+The same Netlify headers also allow PWA installation and service-worker startup:
+
+- `worker-src 'self'` for `/sw.js`
+- `manifest-src 'self'` for `/manifest.webmanifest`
+- `img-src 'self' data:` for install icons and palette-colored favicon data URIs
+
+The deployed app includes a web manifest, install PNGs, an Apple touch icon, and a service worker. Users install it through browser-native flows rather than a custom app prompt.
+
 ## API-Backed Deployment
 
 An API-backed deployment has two services:
@@ -59,3 +67,4 @@ Useful additions for a production deployment:
 - CSP tuned for the frontend and Open-Meteo endpoints.
 - Error tracking such as Sentry.
 - Optional edge caching for common geocoding searches.
+- Optional stale-data messaging if the PWA later displays cached weather while offline.

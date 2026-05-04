@@ -11,8 +11,11 @@ The frontend lives in `apps/web` and is built with React, Vite, and CSS.
 - `src/components/WeatherDashboard.tsx`: hero, instruments, brief, and forecast.
 - `src/hooks/useWeather.ts`: live weather fetch lifecycle.
 - `src/hooks/useLocationSearch.ts`: location search lifecycle.
+- `src/serviceWorker.ts`: browser service-worker registration.
 - `src/testWeatherScenarios.ts`: deterministic test-mode weather data.
 - `src/styles.css`: layout, components, theme, weather effects.
+- `public/manifest.webmanifest`: progressive web app install metadata.
+- `public/sw.js`: service worker for app-shell and weather-response caching.
 
 ## App State
 
@@ -116,6 +119,19 @@ The forecast renders seven rows with:
 ## Responsive Behavior
 
 The desktop dashboard uses a two-column layout with the hero and instruments on the left and the brief/forecast on the right. In single-column layouts the order becomes hero, morning brief, instruments, and forecast. Instrument cards use a responsive grid and preserve enough vertical space for compass, precipitation, atmosphere, and daylight visualizations.
+
+## Progressive Web App
+
+JetStream is installable through native browser PWA flows. The HTML document links the manifest, Apple touch icon, theme color, and SVG favicon. The static cyan SVG is the initial favicon fallback; after React loads, `App.tsx` replaces the favicon with an SVG data URI that uses the active palette accent.
+
+The service worker is intentionally small and first-party:
+
+- It warms core public assets during installation.
+- It serves same-origin static assets with stale-while-revalidate caching.
+- It handles navigations with network-first loading and falls back to cached `index.html`.
+- It handles Open-Meteo API requests with network-first loading and cached fallback responses.
+
+There is no custom install button. iOS users install from Safari's Share menu, while Android and desktop Chromium users install from the browser-provided install affordance.
 
 ## Accessibility Notes
 

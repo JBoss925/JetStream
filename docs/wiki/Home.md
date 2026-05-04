@@ -13,6 +13,7 @@ The default runtime path sends browser requests through the NestJS API, which ca
 - Switch between light/dark themes and color palettes.
 - Toggle between live Open-Meteo data and deterministic test scenarios.
 - Exercise clear, clouds, fog, drizzle, rain, snow, storm, and mixed/freezing precipitation states.
+- Install the static web app as a progressive web app through native browser install flows.
 
 ## Repository Layout
 
@@ -45,3 +46,7 @@ Then open the web app at `http://localhost:5173`.
 ## Data Source Modes
 
 Backend mode is the default and is the recommended demo mode because it keeps the provider adapter visible through Swagger. For frontend-only deployments, set `VITE_WEATHER_DATA_SOURCE=direct` or open `?weatherSource=direct` once. Use `?weatherSource=backend` to switch back.
+
+## Progressive Web App
+
+The web app ships with a manifest, install icons, mobile metadata, and a lightweight service worker. Mobile users install it through native browser flows such as Safari's Share > Add to Home Screen or Chrome's Install app menu. There is no custom in-app install prompt.

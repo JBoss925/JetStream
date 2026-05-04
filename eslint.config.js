@@ -8,6 +8,17 @@ export default tseslint.config(
     ignores: ["**/dist/**", "**/coverage/**", "node_modules/**"],
   },
   {
+    files: ["apps/web/public/sw.js"],
+    languageOptions: {
+      globals: {
+        URL: "readonly",
+        caches: "readonly",
+        fetch: "readonly",
+        self: "readonly",
+      },
+    },
+  },
+  {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parserOptions: {

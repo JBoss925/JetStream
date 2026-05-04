@@ -20,6 +20,7 @@ npm run lint
 - Open-Meteo service request construction, response normalization, unit parameters, and upstream error handling.
 - Web API client behavior in backend mode and hidden direct mode.
 - App rendering for live/test mode, persisted preferences, saved locations, location search, instruments, hourlies, and forecast output.
+- PWA service-worker registration paths for unsupported browsers, already-loaded documents, and initial page load.
 - Deterministic weather fixtures for visual QA, including every weather family, day/night variants, instrument extremes, and hourly variation.
 
 All network tests use mocked fetch responses. Tests should assert the normalized contract and user-visible behavior rather than relying on live Open-Meteo timing.
