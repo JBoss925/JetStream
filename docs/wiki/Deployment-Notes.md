@@ -16,8 +16,11 @@ The Netlify Content Security Policy allows `connect-src` requests to:
 
 - `https://api.open-meteo.com`
 - `https://geocoding-api.open-meteo.com`
+- `https://cloudflareinsights.com`
 
 Open-Meteo must provide the browser CORS response headers for those API calls; Netlify only serves the static app and cannot add CORS headers to third-party Open-Meteo responses.
+
+The policy also allows `script-src` from `https://static.cloudflareinsights.com` so Netlify/Cloudflare analytics beacons can load without weakening the rest of the script policy.
 
 The same Netlify headers also allow PWA installation and service-worker startup:
 
