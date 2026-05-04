@@ -1,0 +1,59 @@
+# API Reference
+
+The NestJS API is the default data path and is documented with Swagger at:
+
+```text
+http://localhost:3000/docs
+```
+
+## `GET /api/locations/search`
+
+Searches Open-Meteo geocoding.
+
+Query parameters:
+
+- `query`: user-entered location text. Swagger defaults to `London`.
+
+Returns an array of `LocationOption` objects.
+
+## `GET /api/weather`
+
+Fetches and normalizes weather for a selected location.
+
+Query parameters:
+
+- `latitude`: defaults to `51.5072`
+- `longitude`: defaults to `-0.1276`
+- `name`: defaults to `London`
+- `country`: defaults to `United Kingdom`
+- `region` optional, defaults to `England`
+- `timezone` optional, defaults to `Europe/London`
+- `units` optional, `imperial` or `metric`, defaults to `imperial`
+
+Returns `NormalizedWeatherResponse`.
+
+## Provider Fields
+
+The API requests:
+
+- current temperature, apparent temperature, humidity, day/night, precipitation, weather code, cloud cover, pressure, wind speed, wind gusts, and wind direction
+- hourly temperature, apparent temperature, humidity, precipitation probability, weather code, cloud cover, wind speed, and wind direction
+- daily weather code, high/low temperature, sunrise, sunset, maximum precipitation probability, and maximum UV index
+
+The API asks Open-Meteo for 48 forecast hours and seven forecast days.
+
+## Direct Mode
+
+The frontend can bypass the API and call Open-Meteo directly with:
+
+```text
+VITE_WEATHER_DATA_SOURCE=direct
+```
+
+or with the hidden URL toggle:
+
+```text
+?weatherSource=direct
+```
+
+Use `?weatherSource=backend` to return the current browser session to the API-backed path.
