@@ -49,12 +49,14 @@ npm run lint
 ```text
 apps/
   api/        NestJS API, Swagger, Open-Meteo provider
-  web/        React/Vite app, dashboard, search, direct-mode Open-Meteo client
+  web/        React/Vite app, dashboard modules, search, direct-mode Open-Meteo client
 packages/
   domain/     Shared weather contracts, WMO mapping, derived insights
 docs/
   wiki/       GitHub Wiki-ready documentation pages
 ```
+
+The web app is split by responsibility: `components/dashboard` contains dashboard sections and instruments, `styles/` mirrors those UI boundaries, `api/` separates the public client from direct Open-Meteo internals, and `testWeatherScenarios/` keeps visual QA fixtures separate from their builders.
 
 ## Wiki Documentation
 

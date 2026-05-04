@@ -1,0 +1,94 @@
+@media (max-width: 1279px) {
+  .weather-primary-column,
+  .weather-side-panels {
+    display: contents;
+  }
+
+  .weather-hero {
+    order: 1;
+  }
+
+  .morning-brief {
+    order: 2;
+  }
+
+  .weather-instruments {
+    order: 3;
+  }
+
+  .forecast-rhythm {
+    order: 4;
+  }
+}
+
+@media (min-width: 1280px) {
+  .weather-main-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(500px, 0.42fr);
+    grid-template-rows: minmax(520px, auto) minmax(0, auto);
+    align-items: stretch;
+    column-gap: 24px;
+    row-gap: 22px;
+  }
+
+  .weather-primary-column,
+  .weather-side-panels {
+    display: contents;
+  }
+
+  .weather-hero {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .weather-instruments {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .morning-brief {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .forecast-rhythm {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .morning-brief,
+  .forecast-rhythm {
+    padding: 22px 0 0;
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .forecast-rhythm {
+    padding-top: 28px;
+  }
+
+  .weather-side-panels .section-kicker {
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .weather-side-panels .morning-brief h3,
+  .weather-side-panels .forecast-rhythm h3 {
+    margin-bottom: 24px;
+    font-size: clamp(2.15rem, 2.8vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .weather-side-panels .brief-lines {
+    display: flex;
+    flex-direction: column;
+    align-content: normal;
+    gap: 12px;
+  }
+
+  .weather-side-panels .brief-line {
+    flex: 0 0 auto;
+    min-height: auto;
+    overflow: visible;
+  }
+}
+

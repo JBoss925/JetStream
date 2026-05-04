@@ -1,0 +1,107 @@
+.weather-experience {
+  --condition-a: #7dc8e8;
+  --condition-b: #dff4f6;
+  --condition-c: #f7d28a;
+  --hero-text: #10201f;
+  --hero-muted: rgb(16 32 31 / 68%);
+  --hero-accent: #174a78;
+  --hero-overlay: rgb(20 32 31 / 22%);
+  --hero-sun: #e8a93b;
+  --hero-sun-glow: rgb(255 209 108 / 70%);
+  display: grid;
+  gap: 22px;
+  color: var(--text);
+}
+
+.condition-clear {
+  --condition-a: #72b8e5;
+  --condition-b: #f8d684;
+  --condition-c: #f5f8ea;
+  --hero-text: #10201f;
+  --hero-muted: rgb(16 32 31 / 68%);
+  --hero-accent: #174a78;
+}
+
+.condition-clouds {
+  --condition-a: #91a9b7;
+  --condition-b: #d9e2e6;
+  --condition-c: #f8faf8;
+  --hero-text: #10201f;
+  --hero-muted: rgb(16 32 31 / 68%);
+  --hero-accent: #174a78;
+}
+
+.condition-rain,
+.condition-drizzle,
+.condition-mixed {
+  --condition-a: #496d89;
+  --condition-b: #9fb8c9;
+  --condition-c: #d9e7eb;
+  --hero-text: #f5fbfb;
+  --hero-muted: rgb(245 251 251 / 78%);
+  --hero-accent: #dbeeff;
+  --hero-overlay: rgb(6 15 20 / 36%);
+}
+
+.condition-storm {
+  --condition-a: #263141;
+  --condition-b: #6e7d8e;
+  --condition-c: #bfc8d0;
+  --hero-text: #ffffff;
+  --hero-muted: rgb(255 255 255 / 78%);
+  --hero-accent: #ffe6a3;
+  --hero-overlay: rgb(0 0 0 / 48%);
+}
+
+.condition-snow,
+.condition-fog {
+  --condition-a: #b6c7d3;
+  --condition-b: #e5edf2;
+  --condition-c: #ffffff;
+  --hero-text: #132221;
+  --hero-muted: rgb(19 34 33 / 70%);
+  --hero-accent: #174a78;
+}
+
+.condition-night.condition-clear {
+  --condition-a: #071225;
+  --condition-b: #172b4a;
+  --condition-c: #48617b;
+}
+
+.condition-night.condition-clouds {
+  --condition-a: #111a27;
+  --condition-b: #2c3a4d;
+  --condition-c: #6f7f8e;
+}
+
+.condition-night.condition-fog,
+.condition-night.condition-snow {
+  --condition-a: #1a2430;
+  --condition-b: #56697a;
+  --condition-c: #aab7c2;
+}
+
+.condition-night.condition-drizzle,
+.condition-night.condition-rain,
+.condition-night.condition-mixed {
+  --condition-a: #07111b;
+  --condition-b: #1f384b;
+  --condition-c: #5d7485;
+}
+
+.condition-night.condition-storm {
+  --condition-a: #05070e;
+  --condition-b: #1b2332;
+  --condition-c: #4c5565;
+}
+
+.condition-night {
+  --hero-text: #f7fbff;
+  --hero-muted: rgb(247 251 255 / 78%);
+  --hero-accent: #bfeee5;
+  --hero-overlay: rgb(0 0 0 / 48%);
+  --hero-sun: #f3f7ff;
+  --hero-sun-glow: rgb(196 216 255 / 52%);
+}
+

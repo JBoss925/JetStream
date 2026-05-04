@@ -17,7 +17,15 @@ Fixtures are defined in:
 
 ```text
 apps/web/src/testWeatherScenarios.ts
+apps/web/src/testWeatherScenarios/
 ```
+
+`testWeatherScenarios.ts` is the public scenario registry. The fixture implementation is split into:
+
+- `seeds.ts`: scenario seed data.
+- `buildWeather.ts`: conversion from seeds to `NormalizedWeatherResponse`.
+- `locations.ts`: location fixture helper.
+- `types.ts`: scenario and seed types.
 
 Each scenario seed includes:
 
@@ -90,12 +98,12 @@ The web test suite verifies that fixtures:
 
 ## Adding A Scenario
 
-1. Add a `ScenarioSeed` to `daySeeds`.
+1. Add a `ScenarioSeed` to `daySeeds` in `apps/web/src/testWeatherScenarios/seeds.ts`.
 2. Pick a WMO code from `packages/domain/src/weather-code.ts`.
 3. Provide 12 hourly codes, precipitation probabilities, humidity values, cloud-cover values, wind speeds, and wind directions.
 4. Add daily codes if the default sequence is not suitable.
 5. Confirm the scenario appears in the dropdown.
-6. Run `npm test`.
+6. Run `npm run test -w @jetstream-weather/web` and `npm run coverage -w @jetstream-weather/web`.
 
 ## Why Fixtures Live In The Web App
 

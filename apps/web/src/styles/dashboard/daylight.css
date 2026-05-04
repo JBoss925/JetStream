@@ -1,0 +1,38 @@
+.daylight-arc {
+  display: grid;
+  flex: 1 1 auto;
+  place-items: center;
+  min-height: 128px;
+  margin: 8px 0 14px;
+}
+
+.daylight-instrument .instrument-readouts {
+  margin-top: auto;
+}
+
+.daylight-arc svg {
+  display: block;
+  width: min(100%, 260px);
+  height: 128px;
+  overflow: visible;
+}
+
+.daylight-path,
+.daylight-fill {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+
+.daylight-path {
+  stroke: color-mix(in srgb, var(--gold) 34%, var(--line));
+}
+
+.daylight-fill {
+  stroke: var(--gold);
+}
+
+.daylight-marker {
+  fill: var(--gold);
+  filter: drop-shadow(0 0 12px rgb(255 209 108 / 76%));
+}

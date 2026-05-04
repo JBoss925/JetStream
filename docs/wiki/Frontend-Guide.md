@@ -8,14 +8,35 @@ The frontend lives in `apps/web` and is built with React, Vite, and CSS.
 - `src/routes/App.tsx`: application state, live/test mode selection, preferences.
 - `src/components/PreferenceBar.tsx`: live/test mode, scenario, units, and theme controls.
 - `src/components/LocationSearch.tsx`: live location search.
-- `src/components/WeatherDashboard.tsx`: hero, instruments, brief, and forecast.
+- `src/components/WeatherDashboard.tsx`: dashboard layout orchestration.
+- `src/components/dashboard/`: hero, brief, forecast, instrument components, icons, and weather display helpers.
+- `src/components/dashboard/instruments/`: wind, precipitation, atmosphere, and daylight instruments.
+- `src/api/weatherApi.ts`: public weather client for backend and direct modes.
+- `src/api/openMeteoClient.ts`: direct Open-Meteo request construction and normalization.
+- `src/api/dataSource.ts`: hidden backend/direct mode selection.
+- `src/api/http.ts`: shared JSON fetch and error parsing.
 - `src/hooks/useWeather.ts`: live weather fetch lifecycle.
 - `src/hooks/useLocationSearch.ts`: location search lifecycle.
 - `src/serviceWorker.ts`: browser service-worker registration.
-- `src/testWeatherScenarios.ts`: deterministic test-mode weather data.
-- `src/styles.css`: layout, components, theme, weather effects.
+- `src/testWeatherScenarios.ts`: public deterministic test-mode scenario list.
+- `src/testWeatherScenarios/`: scenario seeds, fixture builders, and fixture types.
+- `src/styles.css`: stylesheet import manifest.
+- `src/styles/`: split styles for app shell, controls, search, dashboard sections, motion, and responsive behavior.
 - `public/manifest.webmanifest`: progressive web app install metadata.
 - `public/sw.js`: service worker for app-shell and weather-response caching.
+
+## Frontend Module Layout
+
+The frontend is split by user-facing responsibility:
+
+- App-level orchestration stays in `routes/App.tsx`.
+- Shared controls stay in `components/PreferenceBar.tsx` and `components/LocationSearch.tsx`.
+- Dashboard presentation is divided under `components/dashboard`, with each instrument in its own file.
+- Dashboard calculations live under `components/dashboard/utils` so formatting, wind, precipitation, daylight, and forecast range logic can be tested through the dashboard without crowding JSX files.
+- Direct Open-Meteo behavior lives under `api`, separate from the thin public `weatherApi.ts` facade.
+- Test-mode fixtures live under `testWeatherScenarios`, separate from the public scenario registry.
+
+Styles mirror those boundaries. `styles.css` only imports section files; component and dashboard styles live under `styles/` with instrument-specific CSS in `styles/dashboard`.
 
 ## App State
 
@@ -72,6 +93,8 @@ The hero uses local CSS custom properties for weather colors. It intentionally d
 
 The wind instrument shows sustained wind speed, optional gust text when Open-Meteo reports a different current gust value, direction copy, a circular compass with arrow orientation, and hourly wind speed/direction indicators.
 
+Implementation: `components/dashboard/instruments/WindInstrument.tsx` with styles in `styles/dashboard/wind.css`.
+
 ### Atmosphere
 
 The atmosphere instrument shows:
@@ -81,6 +104,8 @@ The atmosphere instrument shows:
 - Cloud-cover meter with icon, value, and range labels.
 - Hourly humidity and cloud-cover bars.
 
+Implementation: `components/dashboard/instruments/AtmosphereInstrument.tsx` with styles in `styles/dashboard/atmosphere.css`.
+
 ### Precipitation
 
 The precipitation instrument shows:
@@ -88,6 +113,8 @@ The precipitation instrument shows:
 - Peak precipitation probability in the next 12 hours.
 - Rain-only mini effect controlled by current precipitation probability with hourly fallback.
 - Eight-hour precipitation bar chart with value labels.
+
+Implementation: `components/dashboard/instruments/PrecipitationInstrument.tsx` with styles in `styles/dashboard/precipitation.css`.
 
 ### Daylight
 
@@ -101,6 +128,8 @@ The daylight instrument shows:
 - UV index row with severity label, such as `6.3 (High)`.
 
 Before sunrise, the remaining row reports time until sunrise. After sunset, it reports that the sun has set.
+
+Implementation: `components/dashboard/instruments/DaylightInstrument.tsx` with styles in `styles/dashboard/daylight.css`.
 
 ### Morning Brief
 

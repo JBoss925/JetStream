@@ -1,0 +1,175 @@
+.compass-rose {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 196px);
+  aspect-ratio: 1;
+  margin: 18px auto 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--accent) 8%, transparent) 0 30%, transparent 31%),
+    linear-gradient(90deg, transparent 49.5%, var(--line) 50%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, var(--line) 50%, transparent 50.5%),
+    color-mix(in srgb, var(--surface-strong) 72%, transparent);
+  box-shadow: inset 0 0 36px rgb(15 118 104 / 9%);
+}
+
+.compass-rose > span {
+  position: absolute;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 900;
+  z-index: 3;
+}
+
+.compass-rose > span:nth-child(1) {
+  top: 12px;
+}
+
+.compass-rose > span:nth-child(2) {
+  right: 14px;
+}
+
+.compass-rose > span:nth-child(3) {
+  bottom: 12px;
+}
+
+.compass-rose > span:nth-child(4) {
+  left: 14px;
+}
+
+.wind-arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--accent-strong);
+  transition: transform 420ms ease;
+  width: 156px;
+  height: 156px;
+  transform-origin: center;
+  z-index: 2;
+}
+
+.wind-arrow-shaft {
+  position: absolute;
+  top: 18px;
+  width: 6px;
+  height: 120px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent-strong), color-mix(in srgb, var(--accent) 42%, transparent));
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.wind-arrow-head {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-right: 15px solid transparent;
+  border-bottom: 38px solid var(--accent-strong);
+  border-left: 15px solid transparent;
+}
+
+.wind-compass-center {
+  position: absolute;
+  width: 16px;
+  aspect-ratio: 1;
+  border: 3px solid var(--surface-strong);
+  border-radius: 50%;
+  background: var(--accent-strong);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 14%, transparent);
+  z-index: 4;
+}
+
+.wind-flow-field {
+  position: absolute;
+  inset: 34px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  border-radius: 50%;
+}
+
+.wind-pulse {
+  position: absolute;
+  top: var(--particle-y);
+  left: var(--particle-x);
+  width: var(--particle-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 48%, transparent);
+  animation: windPulse var(--particle-duration) ease-in-out infinite;
+  animation-delay: var(--particle-delay);
+}
+
+.hourly-wind-list {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hourly-wind-list li {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hourly-wind-arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  aspect-ratio: 1;
+  color: var(--accent-strong);
+  opacity: calc(0.52 + var(--hourly-wind-strength) * 0.48);
+}
+
+.hourly-wind-arrow span {
+  position: relative;
+  width: 3px;
+  height: calc(10px + var(--hourly-wind-strength) * 8px);
+  border-radius: 999px;
+  background: currentColor;
+  transform: rotate(var(--hourly-wind-rotation));
+  transform-origin: center;
+}
+
+.hourly-wind-arrow span::before {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid currentColor;
+  border-left: 5px solid transparent;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.hourly-wind-list strong {
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hourly-wind-list time {
+  min-height: 2.1em;
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.05;
+  text-align: center;
+}
+

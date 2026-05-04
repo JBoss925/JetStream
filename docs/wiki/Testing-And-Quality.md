@@ -24,6 +24,7 @@ Documentation-only changes still need a production-readiness pass before merge. 
 - App rendering for live/test mode, persisted preferences, saved locations, location search, instruments, hourlies, and forecast output.
 - PWA service-worker registration paths for unsupported browsers, already-loaded documents, and initial page load.
 - Deterministic weather fixtures for visual QA, including every weather family, day/night variants, instrument extremes, and hourly variation.
+- Split frontend modules remain covered through user-facing tests, including the direct API client modules, dashboard instrument components, and test-mode fixture builders.
 
 ## GitHub Actions
 

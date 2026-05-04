@@ -1,0 +1,83 @@
+.precipitation-instrument {
+  isolation: isolate;
+}
+
+.precipitation-scene {
+  position: absolute;
+  inset: 88px 18px 48px;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: transparent;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.precipitation-drop {
+  position: absolute;
+  top: var(--drop-start);
+  left: var(--drop-left);
+  width: 2px;
+  height: var(--drop-height);
+  border-radius: 999px;
+  background: linear-gradient(180deg, transparent, var(--rain) 24%, var(--rain));
+  opacity: var(--drop-opacity);
+  animation: precipitationDrop var(--drop-duration) linear infinite;
+  animation-delay: var(--drop-delay);
+}
+
+.precipitation-bars {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: end;
+  gap: 8px;
+  height: 146px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.precipitation-bars li {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 6px;
+  height: 146px;
+}
+
+.precipitation-bars span {
+  position: relative;
+  align-self: end;
+  justify-self: stretch;
+  height: var(--hourly-precipitation-height);
+  min-height: 4px;
+  border-radius: 6px 6px 1px 1px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 66%, white 22%), var(--accent)),
+    var(--accent);
+}
+
+.precipitation-bars strong {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  color: var(--text);
+  font-size: 0.64rem;
+  font-weight: 900;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+.precipitation-bars time {
+  display: grid;
+  align-items: start;
+  min-height: 2.1em;
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.05;
+  text-align: center;
+}
+

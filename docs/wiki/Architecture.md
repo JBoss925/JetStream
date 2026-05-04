@@ -57,3 +57,17 @@ Both backend and direct mode request:
 ## Shared Domain Package
 
 The domain package contains the normalized TypeScript contracts, WMO weather-code mapping, and derived insight rules used by both runtime paths.
+
+## Frontend Code Boundaries
+
+The web app keeps large UI and data concerns split by responsibility:
+
+- `routes/App.tsx` owns application state and mode selection.
+- `api/weatherApi.ts` is the public client facade.
+- `api/openMeteoClient.ts`, `api/dataSource.ts`, and `api/http.ts` isolate direct provider calls, data-source selection, and JSON error handling.
+- `components/dashboard` contains dashboard sections and shared display utilities.
+- `components/dashboard/instruments` contains one component per weather instrument.
+- `styles.css` is an import manifest; concrete styles live in `styles/` and `styles/dashboard/`.
+- `testWeatherScenarios` contains fixture seed data and fixture builders for visual QA.
+
+This layout keeps each module small enough for targeted maintenance while preserving the same user-facing dashboard contract.

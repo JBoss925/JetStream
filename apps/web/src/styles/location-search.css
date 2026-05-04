@@ -1,0 +1,139 @@
+.search-panel {
+  position: relative;
+  z-index: 10;
+  width: min(calc(100vw - 32px), 2040px);
+  margin-bottom: 14px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.search-control {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+}
+
+.search-control input {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  outline: 0;
+}
+
+.search-control button,
+.error-panel button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0 18px;
+}
+
+.form-helper {
+  min-height: 22px;
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--muted);
+}
+
+.form-helper-error {
+  color: var(--critical);
+}
+
+.location-results-panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 30;
+  display: grid;
+  gap: 6px;
+  margin: -1px 0 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+}
+
+.location-results {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-control:has(+ .location-results-panel) {
+  border-radius: 8px 8px 0 0;
+}
+
+.location-results button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-strong);
+  color: var(--text);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.location-results [aria-selected="true"] button,
+.location-results button:hover {
+  border-color: var(--accent);
+}
+
+.location-results small {
+  color: var(--muted);
+}
+
+.status-region {
+  min-height: 24px;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.error-panel {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.skeleton-grid div {
+  min-height: 180px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--surface-strong) 50%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+

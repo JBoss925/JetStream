@@ -1,0 +1,212 @@
+.atmosphere-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.humidity-meter,
+.cloud-meter {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 8px;
+}
+
+.meter-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.meter-title span {
+  color: var(--muted);
+}
+
+.meter-title span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meter-title svg {
+  color: currentColor;
+}
+
+.meter-title strong {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.humidity-track,
+.cloud-track {
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.humidity-track span,
+.cloud-track span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--humidity);
+  min-width: 3px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9fd8fb, var(--rain));
+}
+
+.cloud-track {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.cloud-track span {
+  width: var(--cloud-cover);
+  background:
+    linear-gradient(90deg, rgb(226 232 237 / 96%), rgb(165 178 188 / 82%)),
+    #d7e0e8;
+}
+
+.meter-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.instrument-readouts {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+
+.atmosphere-hourlies {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.atmosphere-hourly-guides {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  height: 62px;
+  pointer-events: none;
+}
+
+.atmosphere-hourly-guides span {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  text-align: right;
+}
+
+.atmosphere-hourly-guides span::before {
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--text) 18%, var(--line));
+  content: "";
+}
+
+.atmosphere-hourly-guides span:first-child {
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.atmosphere-hourly-guides span:last-child {
+  top: 100%;
+  transform: translateY(-50%);
+}
+
+.atmosphere-hourly-guides span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.atmosphere-hourlies ol {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0 34px 0 0;
+  list-style: none;
+}
+
+.atmosphere-hourlies li {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.atmosphere-hourly-bars {
+  display: grid;
+  align-items: end;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px;
+  height: 62px;
+}
+
+.atmosphere-hourly-bars span {
+  align-self: end;
+  min-height: 4px;
+  border-radius: 4px 4px 1px 1px;
+}
+
+.hourly-humidity {
+  height: var(--hourly-atmosphere-value);
+  background: linear-gradient(180deg, #9fd8fb, var(--rain));
+}
+
+.hourly-cloud {
+  height: var(--hourly-atmosphere-value);
+  background:
+    linear-gradient(180deg, rgb(226 232 237 / 96%), rgb(165 178 188 / 82%)),
+    #d7e0e8;
+}
+
+.atmosphere-hourlies time {
+  color: var(--muted);
+  font-size: 0.62rem;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.instrument-readouts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.instrument-readouts dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+}
+
+.instrument-readouts dd {
+  margin: 0;
+  font-weight: 900;
+}
+

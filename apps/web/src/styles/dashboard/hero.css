@@ -1,0 +1,283 @@
+.weather-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1.08fr);
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, var(--condition-a), var(--condition-b) 54%, var(--condition-c)),
+    #dff4f6;
+  box-shadow: 0 26px 80px rgb(26 48 60 / 14%);
+  color: var(--hero-text);
+}
+
+.weather-hero::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  content: "";
+  background: linear-gradient(0deg, var(--hero-overlay), transparent);
+  pointer-events: none;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: space-between;
+  min-height: 520px;
+  padding: clamp(24px, 4vw, 44px);
+}
+
+.hero-copy .eyebrow {
+  color: var(--hero-text);
+}
+
+.hero-copy h2 {
+  margin-bottom: clamp(16px, 1.6vw, 28px);
+  font-size: clamp(2.6rem, 7vw, 6.4rem);
+  line-height: 0.9;
+}
+
+.location-subtitle,
+.observed {
+  color: var(--hero-muted);
+}
+
+.hero-temperature {
+  display: grid;
+  gap: 8px;
+}
+
+.hero-temperature-value {
+  display: inline-flex;
+  align-items: flex-start;
+  width: fit-content;
+  font-size: clamp(5.6rem, 18vw, 12rem);
+  font-weight: 900;
+  line-height: 0.78;
+}
+
+.hero-temperature-unit {
+  margin-top: 0.04em;
+  font-size: 0.5em;
+  line-height: 1;
+}
+
+.hero-temperature strong {
+  color: var(--hero-text);
+  font-size: clamp(1.35rem, 4vw, 2.2rem);
+}
+
+.atmospheric-stage {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgb(0 0 0 / 72%) 12%, #000000 26%);
+  mask-image: linear-gradient(90deg, transparent 0, rgb(0 0 0 / 72%) 12%, #000000 26%);
+}
+
+.sky-disc {
+  position: absolute;
+  top: 12%;
+  right: 13%;
+  width: 136px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--hero-sun);
+  box-shadow: 0 0 68px var(--hero-sun-glow);
+}
+
+.condition-night .sky-disc {
+  box-shadow: 0 0 56px var(--hero-sun-glow);
+}
+
+.condition-night .sky-disc::after {
+  content: none;
+}
+
+.condition-storm .sky-disc,
+.condition-rain .sky-disc,
+.condition-drizzle .sky-disc,
+.condition-mixed .sky-disc {
+  opacity: 0.28;
+}
+
+.stage-cloud {
+  position: absolute;
+  width: 240px;
+  height: 82px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    inset 0 -12px 22px rgb(174 190 196 / 18%),
+    0 18px 46px rgb(52 74 82 / 12%);
+  animation: cloudDrift 16s ease-in-out infinite alternate;
+}
+
+.condition-night .stage-cloud {
+  background: #c8d1dc;
+  box-shadow:
+    inset 0 -12px 22px rgb(38 52 68 / 20%),
+    0 18px 46px rgb(5 10 18 / 22%);
+}
+
+.stage-cloud::before,
+.stage-cloud::after {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+  background: inherit;
+}
+
+.stage-cloud::before {
+  top: -42px;
+  left: 36px;
+  width: 96px;
+  height: 96px;
+}
+
+.stage-cloud::after {
+  top: -30px;
+  right: 38px;
+  width: 82px;
+  height: 82px;
+}
+
+.stage-cloud-a {
+  top: 28%;
+  left: 4%;
+}
+
+.stage-cloud-b {
+  right: -4%;
+  bottom: 26%;
+  transform: scale(1.14);
+  animation-delay: -5s;
+}
+
+.stage-cloud-c {
+  bottom: 14%;
+  left: 22%;
+  transform: scale(0.72);
+  animation-delay: -9s;
+}
+
+.rain-field {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image:
+    repeating-linear-gradient(
+      104deg,
+      transparent 0 18px,
+      rgb(255 255 255 / 62%) 18px 19px,
+      transparent 19px 45px
+    ),
+    repeating-linear-gradient(
+      104deg,
+      transparent 0 27px,
+      rgb(255 255 255 / 38%) 27px 28px,
+      transparent 28px 68px
+    ),
+    repeating-linear-gradient(
+      104deg,
+      transparent 0 42px,
+      rgb(255 255 255 / 24%) 42px 43px,
+      transparent 43px 96px
+    );
+  background-position:
+    11px -23px,
+    59px 37px,
+    -34px 88px;
+  background-size:
+    83px 109px,
+    139px 173px,
+    197px 241px;
+  transform: translate3d(0, 0, 0);
+  animation: rainFall 1.7s linear infinite;
+}
+
+.rain-field::before,
+.rain-field::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.condition-rain .rain-field,
+.condition-drizzle .rain-field,
+.condition-snow .rain-field,
+.condition-storm .rain-field,
+.condition-mixed .rain-field {
+  opacity: var(--precipitation-alpha);
+}
+
+.condition-drizzle .rain-field {
+  opacity: calc(var(--precipitation-alpha) * 0.805);
+  background-image:
+    radial-gradient(ellipse 1px 68px at 34px 28px, rgb(255 255 255 / 62%) 0 48%, transparent 54%),
+    radial-gradient(ellipse 1px 54px at 92px 146px, rgb(255 255 255 / 48%) 0 48%, transparent 54%),
+    radial-gradient(ellipse 1px 62px at 128px 84px, rgb(255 255 255 / 54%) 0 48%, transparent 54%),
+    radial-gradient(ellipse 1px 48px at 182px 218px, rgb(255 255 255 / 40%) 0 48%, transparent 54%);
+  background-position:
+    54px 18px,
+    11px 92px,
+    73px 41px,
+    29px 123px;
+  background-size:
+    154px 276px,
+    213px 332px,
+    187px 298px,
+    241px 364px;
+  animation: drizzleFall 1.2s linear infinite;
+}
+
+.condition-snow .rain-field {
+  opacity: var(--precipitation-alpha);
+  background-image:
+    url("data:image/svg+xml,%3Csvg%20width%3D%27142%27%20height%3D%27178%27%20viewBox%3D%270%200%20142%20178%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M71%2080v10%27%2F%3E%3Cpath%20d%3D%27M66%2085h10%27%2F%3E%3Cpath%20d%3D%27M67.1%2081.1l7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M74.9%2081.1l-7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M27%20128v8%27%2F%3E%3Cpath%20d%3D%27M23%20132h8%27%2F%3E%3Cpath%20d%3D%27M23.9%20128.9l6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M30.1%20128.9l-6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M116%2038.5v9.0%27%2F%3E%3Cpath%20d%3D%27M111.5%2043h9.0%27%2F%3E%3Cpath%20d%3D%27M112.5%2039.5l7.0%207.0%27%2F%3E%3Cpath%20d%3D%27M119.5%2039.5l-7.0%207.0%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
+    url("data:image/svg+xml,%3Csvg%20width%3D%27142%27%20height%3D%27178%27%20viewBox%3D%270%200%20142%20178%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M71%2080v10%27%2F%3E%3Cpath%20d%3D%27M66%2085h10%27%2F%3E%3Cpath%20d%3D%27M67.1%2081.1l7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M74.9%2081.1l-7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M27%20128v8%27%2F%3E%3Cpath%20d%3D%27M23%20132h8%27%2F%3E%3Cpath%20d%3D%27M23.9%20128.9l6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M30.1%20128.9l-6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M116%2038.5v9.0%27%2F%3E%3Cpath%20d%3D%27M111.5%2043h9.0%27%2F%3E%3Cpath%20d%3D%27M112.5%2039.5l7.0%207.0%27%2F%3E%3Cpath%20d%3D%27M119.5%2039.5l-7.0%207.0%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position:
+    32px 16px,
+    109px 93px;
+  background-size:
+    142px 178px,
+    193px 241px;
+  animation:
+    snowFallA 3s linear infinite,
+    snowDriftA 5.3s ease-in-out infinite alternate;
+}
+
+.condition-snow .rain-field::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg%20width%3D%27211%27%20height%3D%27264%27%20viewBox%3D%270%200%20211%20264%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271.1%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M105.5%20122v10%27%2F%3E%3Cpath%20d%3D%27M100.5%20127h10%27%2F%3E%3Cpath%20d%3D%27M101.6%20123.1l7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M109.4%20123.1l-7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M43%20214.2v7.6%27%2F%3E%3Cpath%20d%3D%27M39.2%20218h7.6%27%2F%3E%3Cpath%20d%3D%27M40.0%20215.0l6.0%206.0%27%2F%3E%3Cpath%20d%3D%27M46.0%20215.0l-6.0%206.0%27%2F%3E%3Cpath%20d%3D%27M174%2059.6v8.8%27%2F%3E%3Cpath%20d%3D%27M169.6%2064h8.8%27%2F%3E%3Cpath%20d%3D%27M170.6%2060.6l6.8%206.8%27%2F%3E%3Cpath%20d%3D%27M177.4%2060.6l-6.8%206.8%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
+    url("data:image/svg+xml,%3Csvg%20width%3D%27211%27%20height%3D%27264%27%20viewBox%3D%270%200%20211%20264%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271.1%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M105.5%20122v10%27%2F%3E%3Cpath%20d%3D%27M100.5%20127h10%27%2F%3E%3Cpath%20d%3D%27M101.6%20123.1l7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M109.4%20123.1l-7.8%207.8%27%2F%3E%3Cpath%20d%3D%27M43%20214.2v7.6%27%2F%3E%3Cpath%20d%3D%27M39.2%20218h7.6%27%2F%3E%3Cpath%20d%3D%27M40.0%20215.0l6.0%206.0%27%2F%3E%3Cpath%20d%3D%27M46.0%20215.0l-6.0%206.0%27%2F%3E%3Cpath%20d%3D%27M174%2059.6v8.8%27%2F%3E%3Cpath%20d%3D%27M169.6%2064h8.8%27%2F%3E%3Cpath%20d%3D%27M170.6%2060.6l6.8%206.8%27%2F%3E%3Cpath%20d%3D%27M177.4%2060.6l-6.8%206.8%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position:
+    91px 74px,
+    24px 171px;
+  background-size:
+    211px 264px,
+    257px 319px;
+  animation:
+    snowFallB 4.7s linear infinite,
+    snowDriftB 6.9s ease-in-out infinite alternate;
+}
+
+.condition-snow .rain-field::after {
+  background-image:
+    url("data:image/svg+xml,%3Csvg%20width%3D%27167%27%20height%3D%27226%27%20viewBox%3D%270%200%20167%20226%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M83.5%20105v8%27%2F%3E%3Cpath%20d%3D%27M79.5%20109h8%27%2F%3E%3Cpath%20d%3D%27M80.4%20105.9l6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M86.6%20105.9l-6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M31%20180.8v6.4%27%2F%3E%3Cpath%20d%3D%27M27.8%20184h6.4%27%2F%3E%3Cpath%20d%3D%27M28.5%20181.5l5.0%205.0%27%2F%3E%3Cpath%20d%3D%27M33.5%20181.5l-5.0%205.0%27%2F%3E%3Cpath%20d%3D%27M137%2048.4v7.2%27%2F%3E%3Cpath%20d%3D%27M133.4%2052h7.2%27%2F%3E%3Cpath%20d%3D%27M134.2%2049.2l5.6%205.6%27%2F%3E%3Cpath%20d%3D%27M139.8%2049.2l-5.6%205.6%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),
+    url("data:image/svg+xml,%3Csvg%20width%3D%27167%27%20height%3D%27226%27%20viewBox%3D%270%200%20167%20226%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Cg%20stroke%3D%27white%27%20stroke-width%3D%271%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M83.5%20105v8%27%2F%3E%3Cpath%20d%3D%27M79.5%20109h8%27%2F%3E%3Cpath%20d%3D%27M80.4%20105.9l6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M86.6%20105.9l-6.2%206.2%27%2F%3E%3Cpath%20d%3D%27M31%20180.8v6.4%27%2F%3E%3Cpath%20d%3D%27M27.8%20184h6.4%27%2F%3E%3Cpath%20d%3D%27M28.5%20181.5l5.0%205.0%27%2F%3E%3Cpath%20d%3D%27M33.5%20181.5l-5.0%205.0%27%2F%3E%3Cpath%20d%3D%27M137%2048.4v7.2%27%2F%3E%3Cpath%20d%3D%27M133.4%2052h7.2%27%2F%3E%3Cpath%20d%3D%27M134.2%2049.2l5.6%205.6%27%2F%3E%3Cpath%20d%3D%27M139.8%2049.2l-5.6%205.6%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position:
+    148px 131px,
+    57px 42px;
+  background-size:
+    167px 226px,
+    223px 287px;
+  animation:
+    snowFallC 6.1s linear infinite,
+    snowDriftC 8.1s ease-in-out infinite alternate;
+}
+

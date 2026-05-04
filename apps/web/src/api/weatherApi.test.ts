@@ -228,6 +228,21 @@ describe("weatherApi", () => {
     );
   });
 
+  it("surfaces a generic message when an error payload has no detail", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: false,
+        status: 500,
+        json: async () => ({}),
+      })),
+    );
+
+    await expect(searchLocations("London")).rejects.toThrow(
+      "Weather request failed. Please try again.",
+    );
+  });
+
   it("uses saved direct mode for short geocoding queries without fetching", async () => {
     localStorage.setItem("jetstream:data-source", "direct");
     const fetch = vi.fn();

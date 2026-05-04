@@ -1,0 +1,129 @@
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@keyframes cloudDrift {
+  to {
+    translate: 22px -8px;
+  }
+}
+
+@keyframes rainFall {
+  to {
+    background-position:
+      -653px 1740px,
+      -876px 2609px,
+      -1371px 3657px;
+  }
+}
+
+@keyframes drizzleFall {
+  to {
+    background-position:
+      54px 846px,
+      11px 1088px,
+      73px 935px,
+      29px 1215px;
+  }
+}
+
+@keyframes snowFallA {
+  100% {
+    background-position:
+      32px 194px,
+      109px 334px;
+  }
+}
+
+@keyframes snowFallB {
+  100% {
+    background-position:
+      91px 338px,
+      24px 490px;
+  }
+}
+
+@keyframes snowFallC {
+  100% {
+    background-position:
+      148px 357px,
+      57px 329px;
+  }
+}
+
+@keyframes snowDriftA {
+  to {
+    transform: translateX(26px);
+  }
+}
+
+@keyframes snowDriftB {
+  to {
+    transform: translateX(-34px);
+  }
+}
+
+@keyframes snowDriftC {
+  to {
+    transform: translateX(18px);
+  }
+}
+
+@keyframes rainDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  18% {
+    opacity: var(--precipitation-alpha);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(54px);
+  }
+}
+
+@keyframes precipitationDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  12% {
+    opacity: var(--drop-opacity);
+  }
+
+  86% {
+    opacity: var(--drop-opacity);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(var(--drop-end));
+  }
+}
+
+@keyframes windPulse {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--wind-flow-rotation)) translateX(var(--particle-start)) scale(0.72);
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  52% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--wind-flow-rotation)) translateX(var(--particle-end)) scale(1.08);
+  }
+}
+
