@@ -42,7 +42,7 @@ React app
 Weather dashboard
 ```
 
-Enable it with `VITE_WEATHER_DATA_SOURCE=direct` or `?weatherSource=direct`. Use `?weatherSource=backend` to switch back.
+Enable it with `VITE_WEATHER_DATA_SOURCE=direct` or `?weatherSource=direct`. Use `?weatherSource=backend` to force the API-backed path for the current page. Data-source mode is resolved on every load from the URL first, then the build environment; it is not persisted in localStorage.
 
 ## Open-Meteo Fields
 

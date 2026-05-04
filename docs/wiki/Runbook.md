@@ -59,4 +59,4 @@ For frontend-only hosting, enable direct mode:
 VITE_WEATHER_DATA_SOURCE=direct npm run dev -w @jetstream-weather/web
 ```
 
-You can also switch a browser session with `?weatherSource=direct` or return to the API with `?weatherSource=backend`.
+You can also switch the current page with `?weatherSource=direct` or force the API with `?weatherSource=backend`. Backend/direct mode is not cached; without a URL override, the app uses `VITE_WEATHER_DATA_SOURCE`, defaulting to backend mode.

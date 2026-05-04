@@ -1,5 +1,3 @@
-const dataSourceStorageKey = "jetstream:data-source";
-
 export type WeatherDataSource = "backend" | "direct";
 
 export function requestedDataSource(): WeatherDataSource {
@@ -15,12 +13,8 @@ export function requestedDataSource(): WeatherDataSource {
   const urlMode = params.get("weatherSource") ?? params.get("dataSource");
 
   if (urlMode === "direct" || urlMode === "backend") {
-    window.localStorage.setItem(dataSourceStorageKey, urlMode);
     return urlMode;
   }
 
-  const savedMode = window.localStorage.getItem(dataSourceStorageKey);
-  return savedMode === "direct" || savedMode === "backend"
-    ? savedMode
-    : normalizedEnvMode;
+  return normalizedEnvMode;
 }

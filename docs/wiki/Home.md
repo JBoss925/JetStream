@@ -51,7 +51,7 @@ Then open the web app at `http://localhost:5173`.
 
 ## Data Source Modes
 
-Backend mode is the default and is the recommended demo mode because it keeps the provider adapter visible through Swagger. For frontend-only deployments, set `VITE_WEATHER_DATA_SOURCE=direct` or open `?weatherSource=direct` once. Use `?weatherSource=backend` to switch back.
+Backend mode is the default and is the recommended demo mode because it keeps the provider adapter visible through Swagger. For frontend-only deployments, build with `VITE_WEATHER_DATA_SOURCE=direct` or open the current page with `?weatherSource=direct`. Use `?weatherSource=backend` to force the API-backed path for the current page. Data-source mode is not cached in localStorage.
 
 ## Progressive Web App
 

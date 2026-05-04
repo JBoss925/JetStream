@@ -56,4 +56,4 @@ or with the hidden URL toggle:
 ?weatherSource=direct
 ```
 
-Use `?weatherSource=backend` to return the current browser session to the API-backed path.
+Use `?weatherSource=backend` to force the API-backed path for the current page. The app does not cache backend/direct mode in localStorage; without a URL override it uses `VITE_WEATHER_DATA_SOURCE`, defaulting to backend mode.

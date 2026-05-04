@@ -27,7 +27,7 @@ Backend mode is the default. The web app calls:
 - `GET http://localhost:3000/api/locations/search`
 - `GET http://localhost:3000/api/weather`
 
-To bypass the backend for frontend-only deployment, set `VITE_WEATHER_DATA_SOURCE=direct` or open the app once with `?weatherSource=direct`. To switch back, use `?weatherSource=backend`.
+To bypass the backend for frontend-only deployment, build with `VITE_WEATHER_DATA_SOURCE=direct` or open the current page with `?weatherSource=direct`. To force the API-backed path for the current page, use `?weatherSource=backend`. The mode is not cached in localStorage; each page load is resolved from the URL first, then the build environment.
 
 ## Useful Scripts
 

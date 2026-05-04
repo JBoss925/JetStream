@@ -174,7 +174,7 @@ describe("weatherApi", () => {
     ]);
     const weather = await getWeather(location, "metric");
 
-    expect(localStorage.getItem("jetstream:data-source")).toBe("direct");
+    expect(localStorage.getItem("jetstream:data-source")).toBeNull();
     expect(String(fetch.mock.calls[0][0])).toContain("geocoding-api.open-meteo.com");
     expect(String(fetch.mock.calls[1][0])).toContain("api.open-meteo.com");
     expect(String(fetch.mock.calls[1][0])).toContain("temperature_unit=celsius");
@@ -243,12 +243,24 @@ describe("weatherApi", () => {
     );
   });
 
-  it("uses saved direct mode for short geocoding queries without fetching", async () => {
-    localStorage.setItem("jetstream:data-source", "direct");
+  it("uses explicit direct mode for short geocoding queries without fetching", async () => {
+    window.history.replaceState(null, "", "/?weatherSource=direct");
     const fetch = vi.fn();
     vi.stubGlobal("fetch", fetch);
 
     await expect(searchLocations("a")).resolves.toEqual([]);
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("ignores stale saved direct mode when the URL and build env do not request it", async () => {
+    localStorage.setItem("jetstream:data-source", "direct");
+    const fetch = vi.fn((_url: URL | string) => okJson([location]));
+    vi.stubGlobal("fetch", fetch);
+
+    await searchLocations("London");
+
+    const [request] = fetch.mock.calls[0] as [URL | string];
+    expect(String(request)).toContain("http://localhost:3000/api/locations/search");
+    expect(localStorage.getItem("jetstream:data-source")).toBe("direct");
   });
 });

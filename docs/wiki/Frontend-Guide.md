@@ -13,7 +13,7 @@ The frontend lives in `apps/web` and is built with React, Vite, and CSS.
 - `src/components/dashboard/instruments/`: wind, precipitation, atmosphere, and daylight instruments.
 - `src/api/weatherApi.ts`: public weather client for backend and direct modes.
 - `src/api/openMeteoClient.ts`: direct Open-Meteo request construction and normalization.
-- `src/api/dataSource.ts`: hidden backend/direct mode selection.
+- `src/api/dataSource.ts`: per-load backend/direct mode selection from URL or build env.
 - `src/api/http.ts`: shared JSON fetch and error parsing.
 - `src/hooks/useWeather.ts`: live weather fetch lifecycle.
 - `src/hooks/useLocationSearch.ts`: location search lifecycle.
