@@ -24,7 +24,7 @@ describe("PWA assets", () => {
       display: "standalone",
       start_url: "/",
       scope: "/",
-      theme_color: "#0d8fb3",
+      theme_color: "#0f7668",
     });
     expect(manifest.icons).toEqual(
       expect.arrayContaining([
@@ -48,6 +48,7 @@ describe("PWA assets", () => {
     );
 
     expect(existsSync(publicPath("apple-touch-icon.png"))).toBe(true);
+    expect(readFileSync(publicPath("icon.svg"), "utf8")).toContain("#0f7668");
     expect(existsSync(publicPath("pwa-192.png"))).toBe(true);
     expect(existsSync(publicPath("pwa-512.png"))).toBe(true);
     expect(existsSync(publicPath("pwa-maskable-512.png"))).toBe(true);

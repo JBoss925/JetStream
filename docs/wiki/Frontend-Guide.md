@@ -154,7 +154,7 @@ The desktop dashboard uses a two-column layout with the hero and instruments on 
 
 ## Progressive Web App
 
-JetStream is installable through native browser PWA flows. The HTML document links the manifest, Apple touch icon, theme color, and SVG favicon. The static cyan SVG is the initial favicon fallback; after React loads, `App.tsx` replaces the favicon with an SVG data URI that uses the active palette accent.
+JetStream is installable through native browser PWA flows. The HTML document links the manifest, Apple touch icon, theme color, and SVG favicon. The static seafoam SVG is the initial favicon fallback; after React loads, `App.tsx` replaces the favicon with an SVG data URI that uses the active palette accent.
 
 The service worker is intentionally small and first-party:
 

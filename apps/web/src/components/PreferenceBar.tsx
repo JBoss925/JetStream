@@ -37,8 +37,8 @@ const colorThemeOptions: Array<{
   label: string;
   swatch: string;
 }> = [
-  { id: "cyan", label: "Cyan", swatch: "#0d8fb3" },
   { id: "seafoam", label: "Seafoam", swatch: "#0f7668" },
+  { id: "cyan", label: "Cyan", swatch: "#0d8fb3" },
   { id: "blue", label: "Blue", swatch: "#256ca8" },
   { id: "purple", label: "Purple", swatch: "#7756c5" },
   { id: "rose", label: "Rose", swatch: "#c04b73" },

@@ -29,7 +29,7 @@ describe("preferences", () => {
   it("reads and writes units, theme, and color theme preferences", () => {
     expect(readUnitsPreference()).toBe("imperial");
     expect(readThemePreference()).toBe("dark");
-    expect(readColorThemePreference()).toBe("cyan");
+    expect(readColorThemePreference()).toBe("seafoam");
 
     writeUnitsPreference("metric");
     writeThemePreference("light");
@@ -38,7 +38,7 @@ describe("preferences", () => {
     expect(readUnitsPreference()).toBe("metric");
     expect(readThemePreference()).toBe("light");
     expect(readColorThemePreference()).toBe("coral");
-    expect(getColorThemeAccent("cyan")).toBe("#0d8fb3");
+    expect(getColorThemeAccent("seafoam")).toBe("#0f7668");
     expect(getColorThemeAccent("coral")).toBe("#cf5f42");
   });
 
@@ -46,7 +46,7 @@ describe("preferences", () => {
     localStorage.setItem("jetstream-weather:color-theme", "invalid");
     localStorage.setItem("jetstream-weather:default-location", "{");
 
-    expect(readColorThemePreference()).toBe("cyan");
+    expect(readColorThemePreference()).toBe("seafoam");
     expect(readDefaultStartupPreference()).toBeNull();
 
     localStorage.setItem(

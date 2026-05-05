@@ -2,8 +2,8 @@ import type { LocationOption, Units } from "@jetstream-weather/domain";
 
 export type ThemePreference = "light" | "dark";
 export type ColorThemePreference =
-  | "cyan"
   | "seafoam"
+  | "cyan"
   | "blue"
   | "purple"
   | "rose"
@@ -27,8 +27,8 @@ const themeKey = "jetstream-weather:theme";
 const colorThemeKey = "jetstream-weather:color-theme";
 const defaultLocationKey = "jetstream-weather:default-location";
 export const colorThemeAccents: Record<ColorThemePreference, string> = {
-  cyan: "#0d8fb3",
   seafoam: "#0f7668",
+  cyan: "#0d8fb3",
   blue: "#256ca8",
   purple: "#7756c5",
   rose: "#c04b73",
@@ -41,8 +41,8 @@ export const colorThemeAccents: Record<ColorThemePreference, string> = {
   graphite: "#505a66",
 };
 const colorThemes = new Set<ColorThemePreference>([
-  "cyan",
   "seafoam",
+  "cyan",
   "blue",
   "purple",
   "rose",
@@ -80,7 +80,7 @@ export function readColorThemePreference(): ColorThemePreference {
 
   return colorThemes.has(storedColorTheme as ColorThemePreference)
     ? (storedColorTheme as ColorThemePreference)
-    : "cyan";
+    : "seafoam";
 }
 
 export function writeColorThemePreference(colorTheme: ColorThemePreference) {

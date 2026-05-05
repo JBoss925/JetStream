@@ -8,7 +8,7 @@ function renderPreferenceBar(overrides = {}) {
   const props = {
     units: "imperial" as const,
     theme: "dark" as const,
-    colorTheme: "cyan" as const,
+    colorTheme: "seafoam" as const,
     backendMode: "live" as const,
     testScenarios: testWeatherScenarios.slice(0, 2),
     selectedTestScenarioId: testWeatherScenarios[0].id,
@@ -58,6 +58,20 @@ describe("PreferenceBar", () => {
       testWeatherScenarios[1].id,
     );
     await user.click(screen.getByRole("button", { name: "Choose color theme" }));
+    expect(screen.getAllByRole("menuitemradio").map((option) => option.textContent)).toEqual([
+      "Seafoam",
+      "Cyan",
+      "Blue",
+      "Purple",
+      "Rose",
+      "Amber",
+      "Slate",
+      "Indigo",
+      "Magenta",
+      "Coral",
+      "Lime",
+      "Graphite",
+    ]);
     await user.click(screen.getByRole("menuitemradio", { name: "Rose" }));
 
     expect(props.onTestScenarioChange).toHaveBeenCalledWith(testWeatherScenarios[1].id);
