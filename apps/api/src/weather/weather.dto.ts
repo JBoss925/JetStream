@@ -4,6 +4,15 @@ import type { Units } from "@jetstream-weather/domain";
 export class LocationSearchQueryDto {
   @ApiProperty({ default: "London", example: "London" })
   query = "London";
+
+  @ApiPropertyOptional({ default: "London", example: "London" })
+  name?: string;
+
+  @ApiPropertyOptional({ default: "England", example: "England" })
+  region?: string;
+
+  @ApiPropertyOptional({ default: "United Kingdom", example: "United Kingdom" })
+  country?: string;
 }
 
 export class WeatherQueryDto {

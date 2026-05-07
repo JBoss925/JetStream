@@ -1,6 +1,8 @@
 import {
   deriveWeatherInsights,
   getWeatherCodeInfo,
+  parseLocationSearchQuery,
+  sortLocationsBySearchRelevance,
   type LocationOption,
   type NormalizedWeatherResponse,
   type Units,
@@ -15,19 +17,21 @@ export async function searchOpenMeteoLocations(
   query: string,
   signal?: AbortSignal,
 ): Promise<LocationOption[]> {
-  if (query.trim().length < 2) {
+  const search = parseLocationSearchQuery(query);
+
+  if (search.city.length < 2) {
     return [];
   }
 
   const url = new URL(`${geocodingBaseUrl}/search`);
-  url.searchParams.set("name", query);
+  url.searchParams.set("name", search.city);
   url.searchParams.set("count", "6");
   url.searchParams.set("language", "en");
   url.searchParams.set("format", "json");
 
   const payload = await fetchJson<OpenMeteoLocationResponse>(url, signal);
 
-  return (payload.results ?? []).map((result) => ({
+  const locations = (payload.results ?? []).map((result) => ({
     id: String(result.id),
     name: result.name,
     region: result.admin1,
@@ -36,6 +40,8 @@ export async function searchOpenMeteoLocations(
     longitude: result.longitude,
     timezone: result.timezone ?? "auto",
   }));
+
+  return sortLocationsBySearchRelevance(locations, search);
 }
 
 export async function getOpenMeteoWeather(

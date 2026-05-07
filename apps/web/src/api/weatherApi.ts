@@ -1,7 +1,8 @@
-import type {
-  LocationOption,
-  NormalizedWeatherResponse,
-  Units,
+import {
+  parseLocationSearchQuery,
+  type LocationOption,
+  type NormalizedWeatherResponse,
+  type Units,
 } from "@jetstream-weather/domain";
 import { requestedDataSource } from "./dataSource";
 import { fetchJson } from "./http";
@@ -18,8 +19,18 @@ export async function searchLocations(
     return searchOpenMeteoLocations(query, signal);
   }
 
+  const search = parseLocationSearchQuery(query);
   const url = new URL(`${backendBaseUrl}/api/locations/search`);
-  url.searchParams.set("query", query);
+  url.searchParams.set("name", search.city);
+
+  if (search.region) {
+    url.searchParams.set("region", search.region);
+  }
+
+  if (search.country) {
+    url.searchParams.set("country", search.country);
+  }
+
   return fetchJson<LocationOption[]>(url, signal);
 }
 

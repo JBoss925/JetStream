@@ -12,7 +12,12 @@ Searches Open-Meteo geocoding.
 
 Query parameters:
 
-- `query`: user-entered location text. Swagger defaults to `London`.
+- `query`: legacy user-entered location text. Comma-separated values are parsed as `City, Region, Country`.
+- `name`: city/locality name. Defaults to `London`.
+- `region` optional, for example `England`.
+- `country` optional, for example `United Kingdom`.
+
+The API queries Open-Meteo by city name and sorts returned geocoding results by optional region and country closeness. This keeps searches such as `Charlotte, Mich` from being sent upstream as one city name while still putting `Charlotte, Michigan` ahead of weaker matches.
 
 Returns an array of `LocationOption` objects.
 

@@ -38,7 +38,7 @@ describe("LocationSearch", () => {
     await user.type(screen.getByRole("combobox", { name: "Location" }), "Cha");
 
     const option = await screen.findByRole("option", { name: /Charlotte/ });
-    expect(String(fetch.mock.calls[0]?.[0])).toContain("query=Cha");
+    expect(String(fetch.mock.calls[0]?.[0])).toContain("name=Cha");
 
     await user.click(within(option).getByRole("button", { name: /Charlotte/ }));
 
@@ -47,6 +47,23 @@ describe("LocationSearch", () => {
       "Charlotte, North Carolina",
     );
     expect(screen.queryByRole("option", { name: /Charlotte/ })).not.toBeInTheDocument();
+  });
+
+  it("sends comma-separated city and region as structured search parameters", async () => {
+    const user = userEvent.setup();
+    const fetch = vi.fn((_url: URL | string) => okJson([charlotte]));
+    vi.stubGlobal("fetch", fetch);
+
+    render(<LocationSearch onSelectLocation={vi.fn()} />);
+
+    await user.type(screen.getByRole("combobox", { name: "Location" }), "London, England");
+    await screen.findByRole("option", { name: /Charlotte/ });
+
+    const lastCall = fetch.mock.calls[fetch.mock.calls.length - 1] as [URL | string];
+    const requestUrl = String(lastCall[0]);
+    expect(requestUrl).toContain("name=London");
+    expect(requestUrl).toContain("region=England");
+    expect(requestUrl).not.toContain("name=London%2C");
   });
 
   it("submits the active keyboard result", async () => {

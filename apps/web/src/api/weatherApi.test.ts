@@ -73,12 +73,15 @@ describe("weatherApi", () => {
     const fetch = vi.fn((_url: URL | string) => okJson([location]));
     vi.stubGlobal("fetch", fetch);
 
-    await expect(searchLocations("London")).resolves.toEqual([location]);
+    await expect(searchLocations("London, England, United Kingdom")).resolves.toEqual([location]);
 
     const [request] = fetch.mock.calls[0] as [URL | string];
     const requestUrl = String(request);
     expect(requestUrl).toContain("http://localhost:3000/api/locations/search");
-    expect(requestUrl).toContain("query=London");
+    expect(requestUrl).toContain("name=London");
+    expect(requestUrl).toContain("region=England");
+    expect(requestUrl).toContain("country=United+Kingdom");
+    expect(requestUrl).not.toContain("query=");
   });
 
   it("uses the backend BFF by default for weather", async () => {
@@ -169,13 +172,15 @@ describe("weatherApi", () => {
     });
     vi.stubGlobal("fetch", fetch);
 
-    await expect(searchLocations("London")).resolves.toEqual([
+    await expect(searchLocations("London, England")).resolves.toEqual([
       expect.objectContaining({ id: "2643743", name: "London" }),
     ]);
     const weather = await getWeather(location, "metric");
 
     expect(localStorage.getItem("jetstream:data-source")).toBeNull();
     expect(String(fetch.mock.calls[0][0])).toContain("geocoding-api.open-meteo.com");
+    expect(String(fetch.mock.calls[0][0])).toContain("name=London");
+    expect(String(fetch.mock.calls[0][0])).not.toContain("name=London%2C");
     expect(String(fetch.mock.calls[1][0])).toContain("api.open-meteo.com");
     expect(String(fetch.mock.calls[1][0])).toContain("temperature_unit=celsius");
     expect(String(fetch.mock.calls[1][0])).toContain("wind_gusts_10m");

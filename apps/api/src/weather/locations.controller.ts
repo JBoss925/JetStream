@@ -13,10 +13,29 @@ export class LocationsController {
   @ApiQuery({
     name: "query",
     required: false,
+    schema: { default: "London", example: "London, England", type: "string" },
+  })
+  @ApiQuery({
+    name: "name",
+    required: false,
     schema: { default: "London", example: "London", type: "string" },
+  })
+  @ApiQuery({
+    name: "region",
+    required: false,
+    schema: { default: "England", example: "England", type: "string" },
+  })
+  @ApiQuery({
+    name: "country",
+    required: false,
+    schema: { default: "United Kingdom", example: "United Kingdom", type: "string" },
   })
   @ApiOkResponse({ description: "Matching Open-Meteo geocoding locations." })
   search(@Query() query: LocationSearchQueryDto): Promise<LocationOption[]> {
-    return this.openMeteo.searchLocations(query.query ?? "London");
+    const locationQuery = [query.name ?? query.query ?? "London", query.region, query.country]
+      .filter(Boolean)
+      .join(", ");
+
+    return this.openMeteo.searchLocations(locationQuery);
   }
 }

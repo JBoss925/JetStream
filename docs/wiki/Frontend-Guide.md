@@ -35,6 +35,7 @@ The frontend is split by user-facing responsibility:
 - Dashboard calculations live under `components/dashboard/utils` so formatting, wind, precipitation, daylight, and forecast range logic can be tested through the dashboard without crowding JSX files.
 - Direct Open-Meteo behavior lives under `api`, separate from the thin public `weatherApi.ts` facade.
 - Test-mode fixtures live under `testWeatherScenarios`, separate from the public scenario registry.
+- Location search text is parsed as comma-separated `City, Region, Country` before API calls. Backend mode sends structured `name`, `region`, and `country` parameters, while direct mode queries Open-Meteo by city. Both paths sort returned results by region/country closeness so partial qualifiers like `Mich` can rank Michigan above weaker matches.
 
 Styles mirror those boundaries. `styles.css` only imports section files; component and dashboard styles live under `styles/` with instrument-specific CSS in `styles/dashboard`.
 

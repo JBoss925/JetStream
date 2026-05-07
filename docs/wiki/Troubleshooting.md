@@ -28,6 +28,7 @@ Common causes:
 ## Location Search Shows No Results
 
 - Search text must be at least two characters.
+- Comma-separated searches are interpreted as `City, Region, Country`; partial region/country qualifiers sort closer matches first.
 - Try a more specific city name.
 - In backend mode, check `/api/locations/search`.
 - In direct mode, check the Open-Meteo geocoding request.

@@ -88,7 +88,7 @@ describe("OpenMeteoService", () => {
       ),
     );
 
-    const results = await new OpenMeteoService().searchLocations("London");
+    const results = await new OpenMeteoService().searchLocations("London, England");
 
     expect(results).toEqual([
       expect.objectContaining({
@@ -103,6 +103,51 @@ describe("OpenMeteoService", () => {
       expect.objectContaining({ pathname: "/v1/search" }),
       expect.objectContaining({ headers: { accept: "application/json" } }),
     );
+    const [requestUrl] = (fetch as ReturnType<typeof vi.fn>).mock.calls[0] as [URL];
+    expect(requestUrl.searchParams.get("name")).toBe("London");
+  });
+
+  it("sorts geocoding results by parsed region and country", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        okJson({
+          results: [
+            {
+              id: 6058560,
+              name: "London",
+              admin1: "Ontario",
+              country: "Canada",
+              latitude: 42.9834,
+              longitude: -81.233,
+              timezone: "America/Toronto",
+            },
+            {
+              id: 2643743,
+              name: "London",
+              admin1: "England",
+              country: "United Kingdom",
+              latitude: 51.5085,
+              longitude: -0.1257,
+              timezone: "Europe/London",
+            },
+          ],
+        }),
+      ),
+    );
+
+    await expect(new OpenMeteoService().searchLocations("London, Eng")).resolves.toEqual([
+      expect.objectContaining({
+        id: "2643743",
+        region: "England",
+        country: "United Kingdom",
+      }),
+      expect.objectContaining({
+        id: "6058560",
+        region: "Ontario",
+        country: "Canada",
+      }),
+    ]);
   });
 
   it("returns no geocoding results for too-short queries without fetching", async () => {

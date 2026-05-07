@@ -15,6 +15,24 @@ describe("weather controllers", () => {
     expect(openMeteo.searchLocations).toHaveBeenCalledWith("London");
   });
 
+  it("passes structured location search fields to the provider", async () => {
+    const openMeteo = {
+      searchLocations: vi.fn(async () => []),
+    };
+    const controller = new LocationsController(openMeteo as never);
+
+    await controller.search({
+      query: "London",
+      name: "London",
+      region: "England",
+      country: "United Kingdom",
+    });
+
+    expect(openMeteo.searchLocations).toHaveBeenCalledWith(
+      "London, England, United Kingdom",
+    );
+  });
+
   it("normalizes weather query defaults before calling the provider", async () => {
     const openMeteo = {
       getWeather: vi.fn(async () => ({ ok: true })),

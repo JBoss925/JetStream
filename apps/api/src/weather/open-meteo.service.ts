@@ -2,6 +2,8 @@ import { BadGatewayException, Injectable } from "@nestjs/common";
 import {
   deriveWeatherInsights,
   getWeatherCodeInfo,
+  parseLocationSearchQuery,
+  sortLocationsBySearchRelevance,
   type LocationOption,
   type NormalizedWeatherResponse,
   type Units,
@@ -68,19 +70,21 @@ interface OpenMeteoErrorPayload {
 @Injectable()
 export class OpenMeteoService {
   async searchLocations(query: string): Promise<LocationOption[]> {
-    if (query.trim().length < 2) {
+    const search = parseLocationSearchQuery(query);
+
+    if (search.city.length < 2) {
       return [];
     }
 
     const url = new URL(`${geocodingBaseUrl}/search`);
-    url.searchParams.set("name", query);
+    url.searchParams.set("name", search.city);
     url.searchParams.set("count", "6");
     url.searchParams.set("language", "en");
     url.searchParams.set("format", "json");
 
     const payload = await this.fetchJson<OpenMeteoLocationResponse>(url);
 
-    return (payload.results ?? []).map((result) => ({
+    const locations = (payload.results ?? []).map((result) => ({
       id: String(result.id),
       name: result.name,
       region: result.admin1,
@@ -89,6 +93,8 @@ export class OpenMeteoService {
       longitude: result.longitude,
       timezone: result.timezone ?? "auto",
     }));
+
+    return sortLocationsBySearchRelevance(locations, search);
   }
 
   async getWeather(
