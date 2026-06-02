@@ -1,11 +1,7 @@
 .app-shell {
   width: min(1920px, calc(100% - 32px));
   margin: 0 auto;
-  padding:
-    max(28px, env(safe-area-inset-top))
-    env(safe-area-inset-right)
-    calc(64px + env(safe-area-inset-bottom))
-    env(safe-area-inset-left);
+  padding: 28px 0 64px;
 }
 
 .app-header {
@@ -82,3 +78,4 @@ h1 {
   font-size: 1.08rem;
   line-height: 1.65;
 }
+

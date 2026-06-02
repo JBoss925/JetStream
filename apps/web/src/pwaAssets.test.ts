@@ -12,7 +12,6 @@ describe("PWA assets", () => {
       name: string;
       short_name: string;
       display: string;
-      display_override: string[];
       start_url: string;
       scope: string;
       theme_color: string;
@@ -22,8 +21,7 @@ describe("PWA assets", () => {
     expect(manifest).toMatchObject({
       name: "JetStream",
       short_name: "JetStream",
-      display: "fullscreen",
-      display_override: ["fullscreen", "standalone"],
+      display: "standalone",
       start_url: "/",
       scope: "/",
       theme_color: "#0f7668",
