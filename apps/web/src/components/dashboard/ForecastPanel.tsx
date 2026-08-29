@@ -8,23 +8,9 @@ interface ForecastPanelProps {
 
 export function ForecastPanel({ weather }: ForecastPanelProps) {
   const symbol = unitSymbol(weather);
-  const startDate = formatForecastDate(weather.daily[0]?.date);
-  const endDate = formatForecastDate(weather.daily[6]?.date ?? weather.daily[0]?.date);
 
   return (
-    <section className="forecast-rhythm" aria-labelledby="forecast-title">
-      <div className="section-kicker">
-        <span>This week</span>
-        <small>Data from OpenMeteo</small>
-      </div>
-      <div className="forecast-title-row">
-        <div>
-          <h3 id="forecast-title">7-Day Forecast</h3>
-          <p>
-            {startDate} - {endDate}
-          </p>
-        </div>
-      </div>
+    <section className="forecast-rhythm" aria-label="Daily forecast">
       <ol className="daily-rhythm-list">
         {weather.daily.map((forecast) => (
           <li

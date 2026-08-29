@@ -86,6 +86,7 @@ describe("App", () => {
       })),
     );
 
+    const user = userEvent.setup();
     render(<App />);
 
     await waitFor(() => {
@@ -93,6 +94,7 @@ describe("App", () => {
     });
     expect(screen.getAllByText("Partly cloudy").length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "What matters right now" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: /Details/ }));
     expect(screen.getByText("Wind")).toBeVisible();
     expect(screen.getByText(/Gusts up to 18 mph\./)).toBeVisible();
     expect(screen.getByText("Atmosphere")).toBeVisible();
@@ -104,10 +106,11 @@ describe("App", () => {
     expect(screen.getByLabelText("Hourly wind speed")).toBeInTheDocument();
     expect(screen.getByLabelText("Hourly humidity and cloud cover")).toBeInTheDocument();
     expect(screen.getByLabelText("Hourly precipitation probability")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "7-Day Forecast" })).toBeVisible();
     expect(screen.getByTestId("wind-arrow")).toHaveStyle({
       transform: "rotate(0deg)",
     });
+    await user.click(screen.getByRole("button", { name: /Week/ }));
+    expect(screen.getByLabelText("Weekly forecast")).toBeVisible();
   });
 
   it("renders when no favicon link is present", async () => {
@@ -167,13 +170,14 @@ describe("App", () => {
 
     render(<App />);
 
+    await user.click(screen.getByRole("button", { name: "Open settings" }));
     await user.click(screen.getByRole("button", { name: "C" }));
-    await user.click(screen.getByRole("button", { name: "Switch to light theme" }));
+    await user.click(screen.getByRole("button", { name: "Switch to dark theme" }));
     await user.click(screen.getByRole("button", { name: "Choose color theme" }));
     await user.click(screen.getByRole("menuitemradio", { name: "Amber" }));
 
     expect(localStorage.getItem("jetstream-weather:units")).toBe("metric");
-    expect(localStorage.getItem("jetstream-weather:theme")).toBe("light");
+    expect(localStorage.getItem("jetstream-weather:theme")).toBe("dark");
     expect(localStorage.getItem("jetstream-weather:color-theme")).toBe("amber");
     expect(document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.href).toContain(
       "%23b87516",
@@ -211,7 +215,7 @@ describe("App", () => {
     expect(requestUrl).toContain("longitude=-104.9903");
   });
 
-  it("restores a saved test scenario without calling the live API", () => {
+  it("restores a saved test scenario without calling the live API", async () => {
     localStorage.setItem(
       "jetstream-weather:default-location",
       JSON.stringify({
@@ -234,9 +238,11 @@ describe("App", () => {
     }));
     vi.stubGlobal("fetch", fetch);
 
+    const user = userEvent.setup();
     render(<App />);
 
     expect(fetch).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Open settings" }));
     expect(screen.getByRole("button", { name: "Test" })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -284,6 +290,7 @@ describe("App", () => {
     });
     fetch.mockClear();
 
+    await user.click(screen.getByRole("button", { name: "Open settings" }));
     await user.click(screen.getByRole("button", { name: "Test" }));
     expect(fetch).not.toHaveBeenCalled();
     expect(screen.getByRole("heading", { name: "Phoenix" })).toBeVisible();
@@ -305,6 +312,7 @@ describe("App", () => {
 
     render(<App />);
 
+    await user.click(screen.getByRole("button", { name: "Open settings" }));
     await user.click(screen.getByRole("button", { name: "Test" }));
     expect(screen.getByRole("heading", { name: "Phoenix" })).toBeVisible();
     await user.click(

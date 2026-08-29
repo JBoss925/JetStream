@@ -68,7 +68,7 @@ export function writeUnitsPreference(units: Units) {
 }
 
 export function readThemePreference(): ThemePreference {
-  return localStorage.getItem(themeKey) === "light" ? "light" : "dark";
+  return localStorage.getItem(themeKey) === "dark" ? "dark" : "light";
 }
 
 export function writeThemePreference(theme: ThemePreference) {

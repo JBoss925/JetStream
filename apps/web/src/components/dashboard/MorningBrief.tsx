@@ -9,8 +9,8 @@ export function MorningBrief({ insights }: MorningBriefProps) {
   return (
     <section className="morning-brief" aria-labelledby="brief-title">
       <div className="section-kicker">
-        <span>Morning brief</span>
-        <small>Daily insights</small>
+        <span>Today’s outlook</span>
+        <small>At a glance</small>
       </div>
       <h3 id="brief-title">What matters right now</h3>
       <div className="brief-lines">

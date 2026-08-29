@@ -3,19 +3,24 @@
   gap: 0;
   margin: 0;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
   padding: 0;
   list-style: none;
 }
 
 .daily-rhythm-item {
   display: grid;
-  grid-template-columns: 70px 42px minmax(120px, 1fr) 92px minmax(110px, 0.4fr);
+  grid-template-columns: 72px 38px minmax(120px, 1fr) 104px minmax(110px, 0.34fr);
   align-items: center;
   gap: 14px;
-  height: 74px;
+  height: 68px;
   border-bottom: 1px solid var(--line);
   padding: 0;
+  transition: background-color 160ms ease;
+}
+
+.daily-rhythm-item:hover {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
 .daily-rhythm-item:last-child {
@@ -51,7 +56,7 @@
   place-items: center;
   width: 34px;
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: 11px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
 }
@@ -127,5 +132,5 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #4f90bd, #f0b43f);
+  box-shadow: 0 2px 8px rgb(79 144 189 / 22%);
 }
-

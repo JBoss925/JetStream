@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   max-width: 100%;
   min-width: 0;
   margin-left: auto;
@@ -15,31 +15,37 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 42px;
+  min-height: 38px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface-strong);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface-strong) 82%, transparent);
   color: var(--text);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  box-shadow: none;
 }
 
 .segmented-control {
-  padding: 4px 6px;
+  gap: 3px;
+  padding: 3px 4px;
+}
+
+.segmented-control > svg {
+  margin: 0 4px;
+  color: var(--muted);
 }
 
 .segmented-control button,
 .icon-button {
   border: 0;
-  border-radius: 6px;
+  border-radius: 7px;
   background: transparent;
   color: var(--text);
 }
 
 .segmented-control button {
-  min-width: 38px;
-  min-height: 32px;
-  font-weight: 800;
+  min-width: 36px;
+  min-height: 30px;
+  font-size: 0.78rem;
+  font-weight: 760;
 }
 
 .segmented-control button[aria-pressed="true"] {
@@ -49,7 +55,7 @@
 
 .icon-button {
   justify-content: center;
-  width: 42px;
+  width: 38px;
   padding: 0;
 }
 
@@ -62,7 +68,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
 
 .tooltip-button {
@@ -78,7 +84,7 @@
   max-width: 260px;
   padding: 10px 12px;
   border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--surface-strong) 94%, var(--accent) 6%);
   color: var(--text);
   box-shadow: var(--shadow);
@@ -117,15 +123,15 @@
   flex: 1 1 224px;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: 38px;
   max-width: min(420px, 100%);
   min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--surface-strong);
   color: var(--text);
   padding: 4px 8px 4px 12px;
-  box-shadow: var(--shadow);
+  box-shadow: none;
   backdrop-filter: blur(18px);
 }
 
@@ -184,11 +190,12 @@
   right: 0;
   z-index: 100;
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
-  min-width: 170px;
+  min-width: 292px;
   padding: 8px;
   border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--surface-strong) 96%, var(--accent) 4%);
   box-shadow: var(--shadow);
 }
@@ -237,4 +244,3 @@
     inset 0 0 0 1px rgb(255 255 255 / 42%),
     0 0 0 1px rgb(0 0 0 / 12%);
 }
-

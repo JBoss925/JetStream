@@ -28,7 +28,7 @@ describe("preferences", () => {
 
   it("reads and writes units, theme, and color theme preferences", () => {
     expect(readUnitsPreference()).toBe("imperial");
-    expect(readThemePreference()).toBe("dark");
+    expect(readThemePreference()).toBe("light");
     expect(readColorThemePreference()).toBe("seafoam");
 
     writeUnitsPreference("metric");

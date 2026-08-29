@@ -1,23 +1,42 @@
 .search-panel {
   position: relative;
   z-index: 10;
-  width: min(calc(100vw - 32px), 2040px);
-  margin-bottom: 14px;
-  margin-left: 50%;
-  transform: translateX(-50%);
+  width: min(680px, 100%);
+  margin: 0 0 18px;
 }
 
 .search-control {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 58px;
-  padding: 8px 14px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  min-height: 52px;
+  padding: 5px 8px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--surface-strong);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.search-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+}
+
+.search-caption {
+  padding-right: 8px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .search-control input {
@@ -26,6 +45,8 @@
   background: transparent;
   color: var(--text);
   outline: 0;
+  font-size: 0.94rem;
+  font-weight: 620;
 }
 
 .search-control button,
@@ -62,7 +83,7 @@
   padding: 8px;
   border: 1px solid var(--line);
   border-top: 0;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
   background: var(--surface-strong);
   box-shadow: var(--shadow);
 }
@@ -76,7 +97,7 @@
 }
 
 .search-control:has(+ .location-results-panel) {
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .location-results button {
@@ -87,7 +108,7 @@
   gap: 16px;
   min-height: 48px;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: var(--surface-strong);
   color: var(--text);
   padding: 10px 12px;
@@ -136,4 +157,3 @@
   background-size: 200% 100%;
   animation: shimmer 1.2s ease-in-out infinite;
 }
-

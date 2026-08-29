@@ -12,6 +12,8 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
     "@jetstream-weather/domain": "0.1.0",
     "@vitejs/plugin-react": "^4.4.1",
     "lucide-react": "^0.507.0",

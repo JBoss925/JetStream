@@ -13,7 +13,37 @@ function weather(id = "clear-hot-dry"): NormalizedWeatherResponse {
   return scenario.build("imperial");
 }
 
+function openDetails() {
+  fireEvent.click(screen.getByRole("button", { name: /Details/ }));
+}
+
 describe("WeatherDashboard", () => {
+  it("swipes between adjacent forecast views in both directions", () => {
+    const { container } = render(<WeatherDashboard weather={weather()} />);
+
+    const swipe = (startX: number, endX: number) => {
+      const stage = container.querySelector(".view-stage");
+      expect(stage).not.toBeNull();
+      fireEvent.touchStart(stage as Element, {
+        touches: [{ clientX: startX, clientY: 180 }],
+      });
+      fireEvent.touchEnd(stage as Element, {
+        changedTouches: [{ clientX: endX, clientY: 184 }],
+      });
+    };
+
+    swipe(320, 120);
+    expect(screen.getByLabelText("Detailed conditions")).toBeVisible();
+    expect(container.querySelector(".view-stage.is-forward")).not.toBeNull();
+
+    swipe(320, 120);
+    expect(screen.getByLabelText("Weekly forecast")).toBeVisible();
+
+    swipe(80, 280);
+    expect(screen.getByLabelText("Detailed conditions")).toBeVisible();
+    expect(container.querySelector(".view-stage.is-back")).not.toBeNull();
+  });
+
   it("renders sparse optional weather data with fallback copy", () => {
     const sparse = weather("missing-optional-sensors");
 
@@ -49,6 +79,7 @@ describe("WeatherDashboard", () => {
     );
 
     expect(screen.getByText("Fixture")).toBeVisible();
+    openDetails();
     expect(screen.getByText("-- hPa")).toBeVisible();
     expect(screen.getByRole("heading", { name: "-- mph" })).toBeVisible();
     expect(screen.getByText("Wind unavailable")).toBeVisible();
@@ -75,6 +106,8 @@ describe("WeatherDashboard", () => {
 
     render(<WeatherDashboard weather={afterSunset} />);
 
+    openDetails();
+
     expect(screen.getByText("High pressure")).toBeVisible();
     expect(screen.getByText("Sun has set")).toBeVisible();
     expect(screen.getByText("0% chance next 12 hours")).toBeVisible();
@@ -86,6 +119,7 @@ describe("WeatherDashboard", () => {
     const rainy = weather("heavy-rain-windy");
 
     const { container } = render(<WeatherDashboard weather={rainy} />);
+    openDetails();
     const drop = container.querySelector(".precipitation-drop");
 
     expect(drop).not.toBeNull();
@@ -121,10 +155,13 @@ describe("WeatherDashboard", () => {
     );
 
     expect(screen.getByText(/Updated --/)).toBeVisible();
+    openDetails();
     expect(screen.getByText("Variable winds with shifting direction.")).toBeVisible();
     expect(screen.getAllByText("--").length).toBeGreaterThan(0);
     expect(screen.getByText("12 (Extreme)")).toBeVisible();
-    expect(screen.getByText("-- - --")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: /Week/ }));
+    expect(screen.getByLabelText("Daily forecast").querySelectorAll("li")).toHaveLength(0);
+    openDetails();
 
     rerender(
       <WeatherDashboard
@@ -159,6 +196,8 @@ describe("WeatherDashboard", () => {
         }}
       />,
     );
+
+    openDetails();
 
     expect(screen.getAllByText("--").length).toBeGreaterThan(0);
     expect(screen.getAllByText("--").length).toBeGreaterThan(0);
@@ -208,6 +247,7 @@ describe("WeatherDashboard", () => {
     ];
 
     const { rerender } = render(<WeatherDashboard weather={variants[0]} />);
+    openDetails();
     expect(screen.getByText(/Light, barely moving winds drifting/)).toBeVisible();
     expect(screen.getByText("30 min until sunrise")).toBeVisible();
     expect(screen.getByText("4 (Moderate)")).toBeVisible();

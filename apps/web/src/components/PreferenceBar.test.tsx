@@ -58,6 +58,9 @@ describe("PreferenceBar", () => {
       testWeatherScenarios[1].id,
     );
     await user.click(screen.getByRole("button", { name: "Choose color theme" }));
+    expect(screen.getByRole("menu", { name: "Color theme" }).parentElement).toBe(
+      document.body,
+    );
     expect(screen.getAllByRole("menuitemradio").map((option) => option.textContent)).toEqual([
       "Seafoam",
       "Cyan",

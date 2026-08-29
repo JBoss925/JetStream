@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Database,
   MapPinned,
@@ -6,6 +7,8 @@ import {
   Palette,
   SunMedium,
   Thermometer,
+  Settings2,
+  X,
 } from "lucide-react";
 import type { Units } from "@jetstream-weather/domain";
 import type {
@@ -30,6 +33,7 @@ interface PreferenceBarProps {
   onBackendModeChange: (mode: BackendMode) => void;
   onTestScenarioChange: (scenarioId: string) => void;
   isCurrentLocationDefault: boolean;
+  compact?: boolean;
 }
 
 const colorThemeOptions: Array<{
@@ -65,15 +69,116 @@ export function PreferenceBar({
   onBackendModeChange,
   onTestScenarioChange,
   isCurrentLocationDefault,
+  compact = false,
 }: PreferenceBarProps) {
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(!compact);
+  const paletteButtonRef = useRef<HTMLButtonElement>(null);
+  const paletteMenuRef = useRef<HTMLDivElement>(null);
+  const [palettePosition, setPalettePosition] = useState({
+    left: 12,
+    top: 12,
+    width: 280,
+  });
   const selectedColorTheme = colorThemeOptions.find(
     (option) => option.id === colorTheme,
   );
 
+  useEffect(() => {
+    if (!isPaletteOpen) {
+      return undefined;
+    }
+
+    const positionPalette = () => {
+      const anchor = paletteButtonRef.current?.getBoundingClientRect();
+      if (!anchor) {
+        return;
+      }
+
+      const gutter = 12;
+      const width = Math.min(292, window.innerWidth - gutter * 2);
+      const height = paletteMenuRef.current?.offsetHeight ?? 254;
+      const left = Math.min(
+        Math.max(anchor.right - width, gutter),
+        window.innerWidth - width - gutter,
+      );
+      const above = anchor.top - height - 8;
+      const top =
+        above >= gutter
+          ? above
+          : Math.min(anchor.bottom + 8, window.innerHeight - height - gutter);
+
+      setPalettePosition({ left, top: Math.max(gutter, top), width });
+    };
+    const dismissPalette = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        !paletteButtonRef.current?.contains(target) &&
+        !paletteMenuRef.current?.contains(target)
+      ) {
+        setIsPaletteOpen(false);
+      }
+    };
+    const dismissWithEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsPaletteOpen(false);
+        paletteButtonRef.current?.focus();
+      }
+    };
+
+    positionPalette();
+    window.addEventListener("resize", positionPalette);
+    document.addEventListener("scroll", positionPalette, true);
+    document.addEventListener("pointerdown", dismissPalette);
+    document.addEventListener("keydown", dismissWithEscape);
+
+    return () => {
+      window.removeEventListener("resize", positionPalette);
+      document.removeEventListener("scroll", positionPalette, true);
+      document.removeEventListener("pointerdown", dismissPalette);
+      document.removeEventListener("keydown", dismissWithEscape);
+    };
+  }, [isPaletteOpen]);
+
   return (
-    <div className="preference-bar" aria-label="Weather preferences">
-      <div className="segmented-control" aria-label="Backend data source">
+    <div className={`preference-shell${compact ? " preference-shell-compact" : ""}`}>
+      {compact ? (
+        <button
+          type="button"
+          className="settings-trigger"
+          aria-label="Open settings"
+          aria-expanded={isSettingsOpen}
+          onClick={() => {
+            setIsSettingsOpen((open) => !open);
+            setIsPaletteOpen(false);
+          }}
+        >
+          <Settings2 size={18} />
+        </button>
+      ) : null}
+      {isSettingsOpen ? (
+      <div className="preference-bar" aria-label="Weather preferences">
+      {compact ? (
+        <div className="settings-heading">
+          <div>
+            <span>Preferences</span>
+            <strong>Make JetStream yours</strong>
+          </div>
+          <button
+            type="button"
+            aria-label="Close settings"
+            onClick={() => {
+              setIsSettingsOpen(false);
+              setIsPaletteOpen(false);
+            }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+      ) : null}
+      <div className="preference-group">
+        <span className="preference-label">Forecast</span>
+        <div className="segmented-control" aria-label="Backend data source">
         <Database aria-hidden="true" size={18} />
         <button
           type="button"
@@ -89,6 +194,7 @@ export function PreferenceBar({
         >
           Test
         </button>
+        </div>
       </div>
       {backendMode === "test" ? (
         <label className="scenario-select">
@@ -105,22 +211,25 @@ export function PreferenceBar({
           </select>
         </label>
       ) : null}
-      <div className="segmented-control" aria-label="Units">
-        <Thermometer aria-hidden="true" size={18} />
-        <button
-          type="button"
-          aria-pressed={units === "imperial"}
-          onClick={() => onUnitsChange("imperial")}
-        >
-          F
-        </button>
-        <button
-          type="button"
-          aria-pressed={units === "metric"}
-          onClick={() => onUnitsChange("metric")}
-        >
-          C
-        </button>
+      <div className="preference-group">
+        <span className="preference-label">Units</span>
+        <div className="segmented-control" aria-label="Units">
+          <Thermometer aria-hidden="true" size={18} />
+          <button
+            type="button"
+            aria-pressed={units === "imperial"}
+            onClick={() => onUnitsChange("imperial")}
+          >
+            F
+          </button>
+          <button
+            type="button"
+            aria-pressed={units === "metric"}
+            onClick={() => onUnitsChange("metric")}
+          >
+            C
+          </button>
+        </div>
       </div>
       <div className="utility-control-group" aria-label="Saved view and theme controls">
           <button
@@ -159,6 +268,7 @@ export function PreferenceBar({
           </button>
           <div className="palette-control">
             <button
+              ref={paletteButtonRef}
               type="button"
               className="icon-button tooltip-button"
               onClick={() => setIsPaletteOpen((isOpen) => !isOpen)}
@@ -178,8 +288,15 @@ export function PreferenceBar({
                 </span>
               ) : null}
             </button>
-            {isPaletteOpen ? (
-              <div className="palette-menu" role="menu" aria-label="Color theme">
+            {isPaletteOpen && typeof document !== "undefined"
+              ? createPortal(
+              <div
+                ref={paletteMenuRef}
+                className="palette-menu palette-menu-floating"
+                role="menu"
+                aria-label="Color theme"
+                style={palettePosition}
+              >
                 {colorThemeOptions.map((option) => (
                   <button
                     key={option.id}
@@ -199,10 +316,14 @@ export function PreferenceBar({
                     <span>{option.label}</span>
                   </button>
                 ))}
-              </div>
-            ) : null}
+              </div>,
+              document.body,
+              )
+              : null}
           </div>
       </div>
+      </div>
+      ) : null}
     </div>
   );
 }

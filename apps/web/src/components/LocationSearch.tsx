@@ -1,16 +1,18 @@
-import { Search } from "lucide-react";
+import { ChevronDown, MapPin, Search, X } from "lucide-react";
 import { FormEvent, KeyboardEvent, useId, useMemo, useState } from "react";
 import type { LocationOption } from "@jetstream-weather/domain";
 import { useLocationSearch } from "../hooks/useLocationSearch";
 
 interface LocationSearchProps {
+  location?: LocationOption;
   onSelectLocation: (location: LocationOption) => void;
 }
 
-export function LocationSearch({ onSelectLocation }: LocationSearchProps) {
+export function LocationSearch({ location: currentLocation, onSelectLocation }: LocationSearchProps) {
   const [query, setQuery] = useState("");
   const [selectedQuery, setSelectedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(!currentLocation);
   const { results, isLoading, error } = useLocationSearch(query);
   const listboxId = useId();
   const isSelectedQuery = query.trim() !== "" && query === selectedQuery;
@@ -41,6 +43,9 @@ export function LocationSearch({ onSelectLocation }: LocationSearchProps) {
     setQuery(nextQuery);
     setSelectedQuery(nextQuery);
     onSelectLocation(location);
+    if (currentLocation) {
+      setIsOpen(false);
+    }
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -64,12 +69,43 @@ export function LocationSearch({ onSelectLocation }: LocationSearchProps) {
   }
 
   return (
-    <form className="search-panel" onSubmit={handleSubmit}>
+    <form className={`search-panel${currentLocation ? " search-panel-compact" : ""}`} onSubmit={handleSubmit}>
+      {currentLocation ? (
+        <button
+          type="button"
+          className="location-trigger"
+          aria-expanded={isOpen}
+          onClick={() => {
+            setIsOpen((open) => !open);
+            setQuery("");
+            setSelectedQuery("");
+          }}
+        >
+          <MapPin size={16} aria-hidden="true" />
+          <span>
+            <small>Forecast for</small>
+            <strong>{currentLocation.name}</strong>
+          </span>
+          <ChevronDown size={15} aria-hidden="true" />
+        </button>
+      ) : null}
+      {isOpen ? (
+        <div className="location-command">
+          {currentLocation ? (
+            <div className="location-command-heading">
+              <span>Change location</span>
+              <button type="button" aria-label="Close location search" onClick={() => setIsOpen(false)}>
+                <X size={17} />
+              </button>
+            </div>
+          ) : null}
       <label className="sr-only" htmlFor="location-search">
         Location
       </label>
       <div className="search-control">
-        <Search aria-hidden="true" size={20} />
+        <span className="search-icon" aria-hidden="true">
+          <Search size={19} />
+        </span>
         <input
           id="location-search"
           type="search"
@@ -80,7 +116,7 @@ export function LocationSearch({ onSelectLocation }: LocationSearchProps) {
             setActiveIndex(0);
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search for Charlotte, London, Tokyo..."
+          placeholder="Search city or region"
           role="combobox"
           aria-expanded={visibleResults.length > 0}
           aria-controls={listboxId}
@@ -116,6 +152,8 @@ export function LocationSearch({ onSelectLocation }: LocationSearchProps) {
               ))}
             </ul>
           ) : null}
+        </div>
+      ) : null}
         </div>
       ) : null}
     </form>

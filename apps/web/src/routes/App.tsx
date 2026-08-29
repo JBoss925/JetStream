@@ -120,11 +120,22 @@ export function App() {
     <main className="app-shell">
       <header className="app-header">
         <div className="brand-lockup" aria-label="JetStream">
-          <p className="brand-wordmark">
-            <span className="brand-initial">Jet</span>
-            <span>Stream</span>
-          </p>
+          <span className="brand-copy">
+            <span className="brand-wordmark">JetStream</span>
+            <span className="brand-tagline">Weather, considered</span>
+          </span>
         </div>
+        {backendMode === "live" ? (
+          <LocationSearch
+            location={displayedLocation}
+            onSelectLocation={setSelectedLocation}
+          />
+        ) : (
+          <div className="test-location-label">
+            <span>Test scenario</span>
+            <strong>{displayedLocation.name}</strong>
+          </div>
+        )}
         <PreferenceBar
           units={units}
           theme={theme}
@@ -139,12 +150,9 @@ export function App() {
           onBackendModeChange={setBackendMode}
           onTestScenarioChange={setSelectedTestScenarioId}
           isCurrentLocationDefault={isCurrentLocationDefault}
+          compact
         />
       </header>
-
-      {backendMode === "live" ? (
-        <LocationSearch onSelectLocation={setSelectedLocation} />
-      ) : null}
 
       {backendMode === "live" && weatherState.error ? (
         <section className="error-panel" aria-label="Weather error">
