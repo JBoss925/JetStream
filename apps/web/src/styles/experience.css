@@ -649,7 +649,7 @@ body::before {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 919px) {
   .app-shell {
     width: min(100% - 20px, 1380px);
   }
