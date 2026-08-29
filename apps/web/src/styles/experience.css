@@ -738,19 +738,30 @@ body::before {
   }
 
   .hero-temperature {
-    display: block;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: end;
+    gap: 12px;
   }
 
   .hero-condition-copy {
-    position: absolute;
-    right: 28px;
-    bottom: 46px;
+    position: static;
+    justify-self: end;
     width: 120px;
   }
 
   .hero-condition-copy .observed {
     max-width: 120px;
     white-space: normal;
+  }
+
+  .hero-temperature.is-wide-temperature {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .hero-temperature.is-wide-temperature .hero-condition-copy {
+    justify-self: end;
   }
 
   .hero-condition-watermark {
@@ -863,6 +874,17 @@ body::before {
 
   .forecast-rhythm > .section-kicker {
     margin-bottom: 28px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-temperature {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .hero-temperature .hero-condition-copy {
+    justify-self: end;
   }
 }
 

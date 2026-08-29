@@ -18,6 +18,24 @@ function openDetails() {
 }
 
 describe("WeatherDashboard", () => {
+  it("switches wide temperatures into the collision-safe hero layout", () => {
+    const hotWeather = weather();
+    const { container, rerender } = render(<WeatherDashboard weather={hotWeather} />);
+
+    expect(container.querySelector(".hero-temperature.is-wide-temperature")).not.toBeNull();
+
+    rerender(
+      <WeatherDashboard
+        weather={{
+          ...hotWeather,
+          current: { ...hotWeather.current, temperature: 99 },
+        }}
+      />,
+    );
+
+    expect(container.querySelector(".hero-temperature.is-wide-temperature")).toBeNull();
+  });
+
   it("swipes between adjacent forecast views in both directions", () => {
     const { container } = render(<WeatherDashboard weather={weather()} />);
 

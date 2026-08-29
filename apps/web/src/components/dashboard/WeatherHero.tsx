@@ -7,6 +7,8 @@ interface WeatherHeroProps {
 
 export function WeatherHero({ weather }: WeatherHeroProps) {
   const symbol = unitSymbol(weather);
+  const temperature = Math.round(weather.current.temperature);
+  const hasWideTemperature = String(temperature).length >= 3;
 
   return (
     <section className="weather-hero" aria-labelledby="current-weather-title">
@@ -21,9 +23,11 @@ export function WeatherHero({ weather }: WeatherHeroProps) {
             {[weather.location.region, weather.location.country].filter(Boolean).join(", ")}
           </p>
         </div>
-        <div className="hero-temperature">
+        <div
+          className={`hero-temperature${hasWideTemperature ? " is-wide-temperature" : ""}`}
+        >
           <span className="hero-temperature-value">
-            <span>{Math.round(weather.current.temperature)}</span>
+            <span>{temperature}</span>
             <span className="hero-temperature-unit">{symbol}</span>
           </span>
           <div className="hero-condition-copy">
