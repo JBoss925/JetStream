@@ -1,5 +1,13 @@
-import { ChevronDown, MapPin, Search, X } from "lucide-react";
-import { FormEvent, KeyboardEvent, useId, useMemo, useState } from "react";
+import { MapPin, Search } from "lucide-react";
+import {
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { LocationOption } from "@jetstream-weather/domain";
 import { useLocationSearch } from "../hooks/useLocationSearch";
 
@@ -13,10 +21,29 @@ export function LocationSearch({ location: currentLocation, onSelectLocation }: 
   const [selectedQuery, setSelectedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(!currentLocation);
+  const searchPanelRef = useRef<HTMLFormElement>(null);
   const { results, isLoading, error } = useLocationSearch(query);
   const listboxId = useId();
   const isSelectedQuery = query.trim() !== "" && query === selectedQuery;
   const visibleResults = isSelectedQuery ? [] : results;
+
+  useEffect(() => {
+    if (!currentLocation || !isOpen) {
+      return undefined;
+    }
+
+    const dismissLocationSearch = (event: PointerEvent) => {
+      if (!searchPanelRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+        setQuery("");
+        setSelectedQuery("");
+        setActiveIndex(0);
+      }
+    };
+
+    document.addEventListener("pointerdown", dismissLocationSearch);
+    return () => document.removeEventListener("pointerdown", dismissLocationSearch);
+  }, [currentLocation, isOpen]);
 
   const helperText = useMemo(() => {
     if (isSelectedQuery) {
@@ -68,17 +95,33 @@ export function LocationSearch({ location: currentLocation, onSelectLocation }: 
     }
   }
 
+  function toggleLocationSearch() {
+    setIsOpen((open) => !open);
+    setQuery("");
+    setSelectedQuery("");
+    setActiveIndex(0);
+  }
+
   return (
-    <form className={`search-panel${currentLocation ? " search-panel-compact" : ""}`} onSubmit={handleSubmit}>
+    <form
+      ref={searchPanelRef}
+      className={`search-panel${currentLocation ? " search-panel-compact" : ""}`}
+      onSubmit={handleSubmit}
+    >
       {currentLocation ? (
         <button
           type="button"
           className="location-trigger"
           aria-expanded={isOpen}
-          onClick={() => {
-            setIsOpen((open) => !open);
-            setQuery("");
-            setSelectedQuery("");
+          onPointerUp={(event) => {
+            if (event.button === 0) {
+              toggleLocationSearch();
+            }
+          }}
+          onClick={(event) => {
+            if (event.detail === 0) {
+              toggleLocationSearch();
+            }
           }}
         >
           <MapPin size={16} aria-hidden="true" />
@@ -86,19 +129,25 @@ export function LocationSearch({ location: currentLocation, onSelectLocation }: 
             <small>Forecast for</small>
             <strong>{currentLocation.name}</strong>
           </span>
-          <ChevronDown size={15} aria-hidden="true" />
+          <span className="location-trigger-icon" aria-hidden="true">
+            <svg
+              className="location-trigger-chevron"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d={isOpen ? "M6 15L12 9L18 15" : "M6 9L12 15L18 9"} />
+            </svg>
+          </span>
         </button>
       ) : null}
       {isOpen ? (
         <div className="location-command">
-          {currentLocation ? (
-            <div className="location-command-heading">
-              <span>Change location</span>
-              <button type="button" aria-label="Close location search" onClick={() => setIsOpen(false)}>
-                <X size={17} />
-              </button>
-            </div>
-          ) : null}
       <label className="sr-only" htmlFor="location-search">
         Location
       </label>

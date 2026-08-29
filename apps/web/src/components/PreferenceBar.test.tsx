@@ -27,6 +27,22 @@ function renderPreferenceBar(overrides = {}) {
 }
 
 describe("PreferenceBar", () => {
+  it("dismisses compact settings outside while preserving palette interactions", async () => {
+    const props = renderPreferenceBar({ compact: true });
+    const user = userEvent.setup();
+
+    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    expect(screen.getByLabelText("Weather preferences")).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Choose color theme" }));
+    await user.click(screen.getByRole("menuitemradio", { name: "Rose" }));
+    expect(props.onColorThemeChange).toHaveBeenCalledWith("rose");
+    expect(screen.getByLabelText("Weather preferences")).toBeVisible();
+
+    await user.click(document.body);
+    expect(screen.queryByLabelText("Weather preferences")).not.toBeInTheDocument();
+  });
+
   it("updates mode, units, theme, and saved default preferences", async () => {
     const props = renderPreferenceBar();
     const user = userEvent.setup();

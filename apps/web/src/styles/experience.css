@@ -59,6 +59,23 @@ body::before {
   border-radius: 999px;
 }
 
+.location-trigger-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+}
+
+.location-trigger-chevron path {
+  d: path("M 6 9 L 12 15 L 18 9");
+  transition: d 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.location-trigger[aria-expanded="true"] .location-trigger-chevron path {
+  d: path("M 6 15 L 12 9 L 18 15");
+}
+
 .location-trigger strong,
 .settings-trigger,
 .view-navigation button,
@@ -889,6 +906,10 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .location-trigger-chevron path {
+    transition: none;
+  }
+
   .hero-temperature-value,
   .view-stage {
     animation: none;

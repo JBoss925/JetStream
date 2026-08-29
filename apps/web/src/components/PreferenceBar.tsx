@@ -73,6 +73,7 @@ export function PreferenceBar({
 }: PreferenceBarProps) {
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(!compact);
+  const preferenceShellRef = useRef<HTMLDivElement>(null);
   const paletteButtonRef = useRef<HTMLButtonElement>(null);
   const paletteMenuRef = useRef<HTMLDivElement>(null);
   const [palettePosition, setPalettePosition] = useState({
@@ -83,6 +84,31 @@ export function PreferenceBar({
   const selectedColorTheme = colorThemeOptions.find(
     (option) => option.id === colorTheme,
   );
+
+  function toggleSettings() {
+    setIsSettingsOpen((open) => !open);
+    setIsPaletteOpen(false);
+  }
+
+  useEffect(() => {
+    if (!compact || !isSettingsOpen) {
+      return undefined;
+    }
+
+    const dismissSettings = (event: PointerEvent) => {
+      const target = event.target as Element;
+      if (
+        !preferenceShellRef.current?.contains(target) &&
+        !target.closest(".palette-menu")
+      ) {
+        setIsSettingsOpen(false);
+        setIsPaletteOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", dismissSettings);
+    return () => document.removeEventListener("pointerdown", dismissSettings);
+  }, [compact, isSettingsOpen]);
 
   useEffect(() => {
     if (!isPaletteOpen) {
@@ -141,16 +167,25 @@ export function PreferenceBar({
   }, [isPaletteOpen]);
 
   return (
-    <div className={`preference-shell${compact ? " preference-shell-compact" : ""}`}>
+    <div
+      ref={preferenceShellRef}
+      className={`preference-shell${compact ? " preference-shell-compact" : ""}`}
+    >
       {compact ? (
         <button
           type="button"
           className="settings-trigger"
           aria-label="Open settings"
           aria-expanded={isSettingsOpen}
-          onClick={() => {
-            setIsSettingsOpen((open) => !open);
-            setIsPaletteOpen(false);
+          onPointerUp={(event) => {
+            if (event.button === 0) {
+              toggleSettings();
+            }
+          }}
+          onClick={(event) => {
+            if (event.detail === 0) {
+              toggleSettings();
+            }
           }}
         >
           <Settings2 size={18} />

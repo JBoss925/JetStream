@@ -27,6 +27,41 @@ describe("LocationSearch", () => {
     window.history.replaceState(null, "", "/");
   });
 
+  it("toggles the compact forecast selector and its directional chevron", async () => {
+    vi.stubGlobal("fetch", vi.fn(() => okJson([])));
+    const user = userEvent.setup();
+    const { container } = render(
+      <LocationSearch location={charlotte} onSelectLocation={vi.fn()} />,
+    );
+    const trigger = screen.getByRole("button", { name: "Forecast for Charlotte" });
+    const chevron = container.querySelector(".location-trigger-chevron");
+
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(chevron).not.toBeNull();
+    expect(chevron?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M6 9L12 15L18 9",
+    );
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(chevron?.querySelector("path")).toHaveAttribute(
+      "d",
+      "M6 15L12 9L18 15",
+    );
+    expect(screen.queryByText("Change location")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Close location search" }),
+    ).not.toBeInTheDocument();
+    await user.type(screen.getByRole("combobox", { name: "Location" }), "Charlotte");
+
+    await user.click(document.body);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(trigger);
+    expect(screen.getByRole("combobox", { name: "Location" })).toHaveValue("");
+  });
+
   it("searches locations and selects a result", async () => {
     const fetch = vi.fn((_url: URL | string) => okJson([charlotte]));
     const onSelectLocation = vi.fn();
