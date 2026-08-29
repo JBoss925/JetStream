@@ -172,15 +172,15 @@ describe("App", () => {
 
     await user.click(screen.getByRole("button", { name: "Open settings" }));
     await user.click(screen.getByRole("button", { name: "C" }));
-    await user.click(screen.getByRole("button", { name: "Switch to dark theme" }));
+    await user.click(screen.getByRole("button", { name: "Switch to light theme" }));
     await user.click(screen.getByRole("button", { name: "Choose color theme" }));
-    await user.click(screen.getByRole("menuitemradio", { name: "Amber" }));
+    await user.click(screen.getByRole("menuitemradio", { name: "Coral" }));
 
     expect(localStorage.getItem("jetstream-weather:units")).toBe("metric");
-    expect(localStorage.getItem("jetstream-weather:theme")).toBe("dark");
-    expect(localStorage.getItem("jetstream-weather:color-theme")).toBe("amber");
+    expect(localStorage.getItem("jetstream-weather:theme")).toBe("light");
+    expect(localStorage.getItem("jetstream-weather:color-theme")).toBe("coral");
     expect(document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.href).toContain(
-      "%23b87516",
+      "%23cf5f42",
     );
   });
 

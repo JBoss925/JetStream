@@ -211,7 +211,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .hero-cover-meta .eyebrow {
@@ -256,7 +256,7 @@ body::before {
   font-size: clamp(9rem, 17vw, 16rem);
   font-variation-settings: "opsz" 72;
   font-weight: 390;
-  letter-spacing: -0.12em;
+  letter-spacing: -0.075em;
   line-height: 0.55;
   animation: temperatureArrive 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -269,7 +269,10 @@ body::before {
 }
 
 .hero-temperature-unit {
-  margin-left: 0.11em;
+  position: relative;
+  top: -0.34em;
+  display: inline-block;
+  margin-left: 0.18em;
   font-family: var(--sans);
   font-size: 0.22em;
   font-weight: 620;

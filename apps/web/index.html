@@ -1,13 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-color-theme="amber">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("jetstream-weather:theme");
+        const savedColorTheme = localStorage.getItem("jetstream-weather:color-theme");
+        const colorThemes = new Set([
+          "seafoam", "cyan", "blue", "purple", "rose", "amber",
+          "slate", "indigo", "magenta", "coral", "lime", "graphite"
+        ]);
+
+        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+        document.documentElement.dataset.colorTheme = colorThemes.has(savedColorTheme)
+          ? savedColorTheme
+          : "amber";
+      } catch {
+        // The HTML defaults already provide the intended first paint.
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
       content="A production-oriented React and NestJS weather app backed by Open-Meteo REST data."
     />
-    <meta name="theme-color" content="#0f7668" />
+    <meta name="theme-color" content="#1d160d" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="JetStream" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

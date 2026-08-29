@@ -24,7 +24,7 @@ describe("PWA assets", () => {
       display: "standalone",
       start_url: "/",
       scope: "/",
-      theme_color: "#0f7668",
+      theme_color: "#f0b554",
     });
     expect(manifest.icons).toEqual(
       expect.arrayContaining([

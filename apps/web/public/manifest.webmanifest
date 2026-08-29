@@ -5,8 +5,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f8fbfc",
-  "theme_color": "#0f7668",
+  "background_color": "#1d160d",
+  "theme_color": "#f0b554",
   "orientation": "portrait",
   "categories": ["weather", "utilities"],
   "icons": [

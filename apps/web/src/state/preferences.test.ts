@@ -28,8 +28,8 @@ describe("preferences", () => {
 
   it("reads and writes units, theme, and color theme preferences", () => {
     expect(readUnitsPreference()).toBe("imperial");
-    expect(readThemePreference()).toBe("light");
-    expect(readColorThemePreference()).toBe("seafoam");
+    expect(readThemePreference()).toBe("dark");
+    expect(readColorThemePreference()).toBe("amber");
 
     writeUnitsPreference("metric");
     writeThemePreference("light");
@@ -46,7 +46,7 @@ describe("preferences", () => {
     localStorage.setItem("jetstream-weather:color-theme", "invalid");
     localStorage.setItem("jetstream-weather:default-location", "{");
 
-    expect(readColorThemePreference()).toBe("seafoam");
+    expect(readColorThemePreference()).toBe("amber");
     expect(readDefaultStartupPreference()).toBeNull();
 
     localStorage.setItem(
